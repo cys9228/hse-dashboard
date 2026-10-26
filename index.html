@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#06122a">
-<title>이재성플랫폼 | 본사 통합 안전현황 대시보드</title>
+<title>이재성 플랫폼 | 본사 통합 안전현황</title>
 <style>
 :root{--bg:#122546;--line:#1f3d70;--tx:#e6eefc;--mut:#8ea6cf;--blue:#2f80ff;--red:#ef4444;--org:#f59e0b;--yel:#facc15;--grn:#22c55e}
 *{box-sizing:border-box}
@@ -168,6 +168,7 @@ table.t{width:100%;border-collapse:collapse;font-size:13px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .rpt-head{display:none}
 body.ro .ed{display:none!important}
+body.notadm .adm{display:none!important}
 body.locked .top,body.locked .wrap{display:none!important}
 #auth{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto;background:radial-gradient(1200px 600px at 20% 0%,#1b4a9a55,transparent),linear-gradient(160deg,#0b1f45,#06122a 60%)}
 .au-box{width:min(460px,100%);background:#0e2350;border:1px solid #2a4f90;border-radius:16px;padding:26px 26px 18px;box-shadow:0 20px 60px #0009}
@@ -265,7 +266,10 @@ body.locked .top,body.locked .wrap{display:none!important}
 
 <script>
 const SRC='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
-const PRESET_SERVER='https://script.google.com/macros/s/AKfycbxE2ogfrXJjj3VPbEKH9v0q6HVLOVZUPFP5F3e66v2Fpd68_oyP53NtDf9nOpeU5rW5/exec';  /* 임원용 파일에는 서버 주소가 자동으로 들어갑니다 */
+const PRESET_SERVER='https://script.google.com/macros/s/AKfycbxE2ogfrXJjj3VPbEKH9v0q6HVLOVZUPFP5F3e66v2Fpd68_oyP53NtDf9nOpeU5rW5/exec';  /* 웹페이지용 파일에는 서버 주소가 자동으로 들어갑니다 */
+const PRESET_COMPANY='이재성 플랫폼';  /* 웹페이지용 파일에는 회사(플랫폼) 이름이 자동으로 들어갑니다 */
+/* 회사(서버)마다 브라우저 저장공간을 따로 씀 — 같은 PC에서 A사·B사 페이지를 열어도 섞이지 않음 */
+const NS=PRESET_SERVER?'_'+[...PRESET_SERVER].reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7).toString(36):'';
 /* ===================== 기본 유틸 ===================== */
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -276,7 +280,7 @@ const addDays=(s,n)=>{const d=new Date(s+'T00:00:00');d.setDate(d.getDate()+n);r
 const diffDays=(a,b)=>Math.round((new Date(a+'T00:00:00')-new Date(b+'T00:00:00'))/864e5);
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const sum=(a,f)=>a.reduce((s,x)=>s+(+f(x)||0),0);
-const LS='hse_hq_dashboard_v1';
+const LS='hse_hq_dashboard_v1'+NS;
 
 const TYPES=['추락','낙하','끼임','철근 찔림','거푸집 붕괴','양중작업','감전','화재','기타'];
 const TCOL=['#ef4444','#f59e0b','#facc15','#22c55e','#3b82f6','#a855f7','#06b6d4','#f97316','#94a3b8'];
@@ -349,6 +353,7 @@ function load(){
  if(!DB||!DB.sites)DB=online()?emptyDB():demo();
  DB.settings=DB.settings||{role:'대표이사',company:'이재성플랫폼'};
  if(!DB.settings.company||DB.settings.company==='HSE플랫폼')DB.settings.company='이재성플랫폼';
+ if(PRESET_COMPANY)DB.settings.company=PRESET_COMPANY;
  ['hazards','edu','broadcasts','inspections','directives','notices','sites'].forEach(k=>DB[k]=DB[k]||[]);
  if(!DB.accidents)DB.accidents=(!online()&&DB.sites.some(x=>x.id==='s1'))?demoAcc():[];
  if(!DB.vworkers)DB.vworkers=(!online()&&DB.sites.some(x=>x.id==='s1'))?demoVW():[];
@@ -480,7 +485,7 @@ function go(p){state.page=p;location.hash=p;$('#side').classList.remove('open');
 function render(){
  nav();
  const P=PAGES[state.page];const role=DB.settings.role;
- $('#coName').textContent=DB.settings.company||'이재성플랫폼';renderUser();
+ $('#coName').textContent=DB.settings.company||'이재성플랫폼';document.title=(DB.settings.company||'이재성플랫폼')+' | 본사 통합 안전현황';renderUser();
  const head=`<div class="phead"><div><h1>${P.t}</h1>${P.d?`<p>${P.d}</p>`:''}</div>
  <div class="filters">📅 <input type="date" value="${state.from}" onchange="state.from=this.value;render()"> ~ <input type="date" value="${state.to}" onchange="state.to=this.value;render()">
  <select onchange="state.site=this.value;render()"><option value="all">전체 현장</option>${DB.sites.map(s=>`<option value="${s.id}" ${state.site===s.id?'selected':''}>${esc(s.name)}</option>`).join('')}</select>
@@ -629,7 +634,7 @@ function vwReport(){
  return `[취약근로자 현황] ${d.getMonth()+1}/${d.getDate()}\n총원 ${A('total')}명 · 출역 ${A('work')} · 미출역 ${A('absent')} · 퇴사 ${A('quit')}\n고령 ${A('el')} · 고혈압 ${A('bp')} · 당뇨 ${A('dm')} · 고위험 ${A('hr')}\n`+
   L.filter(o=>!o.none).map(o=>`- ${o.st.name}: 총원 ${o.total}, 출역 ${o.work}${o.hr!=null?', 고위험 '+o.hr+(o.sig==='red'?' (기준 초과)':''):''}`).join('\n');
 }
-const SHAREK='hse_share_url',DEF_SHARE='https://cys9228.github.io/hse-dashboard/';
+const SHAREK='hse_share_url'+NS,DEF_SHARE='https://cys9228.github.io/hse-dashboard/';
 function shareUrl(){if(/^https?:/.test(location.protocol))return location.origin+location.pathname;try{return localStorage.getItem(SHAREK)||''}catch(e){return ''}}
 function shareMsg(u){return `[${DB.settings.company||'이재성플랫폼'} · 본사 통합 안전현황]\n${u}\n\n처음 접속하면 「회원가입」 → 관리자 승인 후 로그인됩니다.\n(PC는 크롬·엣지에서 열고 즐겨찾기 ☆ 해 두면 편합니다)`}
 function shareLink(){
@@ -721,7 +726,7 @@ function showSite(id){
  <h4>최근 교육</h4><table class="t"><tbody>${ed.map(e=>`<tr><td>${e.date}</td><td>${esc(e.kind)}</td><td>${esc(e.title)}</td><td class="num">${e.attended}/${e.target}명</td></tr>`).join('')||'<tr><td class="empty">없음</td></tr>'}</tbody></table>
  <h4>산재·공상·아차사고</h4><table class="t"><tbody>${acs.map(e=>`<tr class="click" onclick="openForm('accidents','${e.id}')"><td>${e.date}</td><td>${badge(e.kind)}</td><td>${esc(e.type)}</td><td>${esc(e.desc)}</td><td>${badge(e.status)}</td></tr>`).join('')||'<tr><td class="empty">없음 (무재해)</td></tr>'}</tbody></table>
  <h4>최근 점검</h4><table class="t"><tbody>${ins.map(e=>`<tr><td>${e.date}</td><td>${esc(e.kind)}</td><td>${e.score}점</td><td>${badge(e.result)}</td><td>${esc(e.findings)}</td></tr>`).join('')||'<tr><td class="empty">없음</td></tr>'}</tbody></table>`,
- [{t:'현장 정보 수정',cls:'left ed',fn:()=>openForm('sites',id)},{t:'＋ 위험요인 등록',cls:'ed',fn:()=>openForm('hazards',null,{siteId:id})},{t:'이 현장만 보기',cls:'primary',fn:()=>{state.site=id;closeModal();render()}}]);
+ [{t:'현장 정보 수정',cls:'left ed adm',fn:()=>openForm('sites',id)},{t:'＋ 위험요인 등록',cls:'ed',fn:()=>openForm('hazards',null,{siteId:id})},{t:'이 현장만 보기',cls:'primary',fn:()=>{state.site=id;closeModal();render()}}]);
 }
 
 /* ===================== 목록 페이지 (공통) ===================== */
@@ -751,7 +756,7 @@ function listPage(key,opt={}){
  const sc=SCHEMAS[key],rows=rowsOf(key,opt);LAST[key]=rows;
  const cols=(opt.cols||sc.cols).map(k=>VCOLS[k]||sc.fields.find(f=>f.k===k));
  return `<div class="panel" style="margin-bottom:14px"><h3>${opt.title||sc.title+' 목록'} <small>${rows.length}건</small></h3>
- <div class="toolbar"><input placeholder="🔍 목록 내 검색" oninput="filterRows(this)"><span class="sp"></span>${opt.noAdd?'':`<button class="btn primary ed" onclick="openForm('${key}')">＋ 등록</button>`}<button class="btn" onclick="exportCSV('${key}')">CSV(엑셀) 내보내기</button></div>
+ <div class="toolbar"><input placeholder="🔍 목록 내 검색" oninput="filterRows(this)"><span class="sp"></span>${opt.noAdd?'':`<button class="btn primary ed${ADMK.includes(key)?' adm':''}" onclick="openForm('${key}')">＋ 등록</button>`}<button class="btn" onclick="exportCSV('${key}')">CSV(엑셀) 내보내기</button></div>
  <div class="tw"><table class="t"><thead><tr>${cols.map(c=>`<th>${c.l}</th>`).join('')}<th></th></tr></thead><tbody>
  ${rows.map(r=>`<tr class="click" onclick="openForm('${key}','${r.id}')">${cols.map(c=>`<td>${cell(c,r)}</td>`).join('')}<td class="mut">›</td></tr>`).join('')||`<tr><td colspan="${cols.length+1}" class="empty">데이터가 없습니다</td></tr>`}
  </tbody></table></div></div>`;
@@ -889,7 +894,7 @@ function saveImprove(h,st){
 function pgSettings(){
  const on=online(),lg=logged();
  return `${on?`<div class="grid2" style="margin-bottom:14px"><div class="panel"><h3>🔗 서버 연동 <small><span class="grn">연결됨</span> · ${esc(whoAmI())} · ${ROLE_TXT[CFG.role]||''}</small></h3>
- <div class="mut" style="font-size:12px;word-break:break-all;margin-bottom:10px">${esc(CFG.url)}</div>
+ <div class="mut adm" style="font-size:12px;word-break:break-all;margin-bottom:10px">${esc(CFG.url)}</div>
  <div class="toolbar"><button class="btn" onclick="manualSync()">⟳ 지금 동기화</button>${isAdmin()&&!PRESET_SERVER?'<button class="btn primary" onclick="bakeFile()">🌐 웹페이지용 파일 받기 (index.html)</button>':''}${isAdmin()?`<button class="btn" onclick="go('members')">👥 회원 관리${PENDING?' ('+PENDING+')':''}</button>`:''}${!PRESET_SERVER?'<button class="btn" onclick="disconnect()">연결 해제</button>':''}</div>
  ${isAdmin()?`<div class="toolbar"><button class="btn ed" onclick="if(confirm('이 PC 화면의 자료로 서버 자료 전체를 덮어씁니다. 계속할까요?'))pushAll()">⬆ 이 PC 자료로 서버 덮어쓰기</button></div>`:''}
  <div class="note">· 입력·수정한 내용은 구글 시트에 저장되고, 로그인한 모든 회원 화면에 30초 안에 반영됩니다.<br>· 사진은 구글 드라이브 「HSE대시보드_사진」 폴더에 저장됩니다.</div></div>
@@ -901,9 +906,9 @@ function pgSettings(){
  <div class="toolbar"><button class="btn primary" onclick="connectServer()">서버 연결 · 로그인 화면으로</button></div>
  <div class="note">구글 시트 서버를 연결하면 회원가입·로그인으로 여러 사람이 같은 화면을 봅니다. (서버 설치 방법은 서버 파일(Code.gs) 맨 위에 적혀 있습니다)</div></div>`}
  <div class="grid2" style="margin-bottom:14px"><div class="panel"><h3>기본 설정</h3><div class="form">
- <div class="fld"><span>플랫폼(회사) 이름</span><input value="${esc(DB.settings.company)}" onchange="DB.settings.company=this.value;save();render()"></div>
+ <div class="fld"><span>플랫폼(회사) 이름</span><input value="${esc(DB.settings.company)}" ${PRESET_COMPANY||(online()&&!isAdmin())?'readonly title="관리자만 바꿀 수 있습니다"':''} onchange="DB.settings.company=this.value;save();render()"></div>
  ${on?'':`<div class="fld"><span>보는 사람(직책)</span><select onchange="setRole(this.value)">${['대표이사','안전팀장','안전관리자'].map(o=>`<option ${o===DB.settings.role?'selected':''}>${o}</option>`).join('')}</select></div>`}</div></div>
- <div class="panel"><h3>데이터 관리</h3><div class="toolbar"><button class="btn primary" onclick="backup()">💾 백업 파일 받기</button><label class="btn ed">📂 백업 불러오기<input type="file" accept=".json" hidden onchange="restore(this)"></label>
+ <div class="panel adm"><h3>데이터 관리 <small>관리자 전용</small></h3><div class="toolbar"><button class="btn primary" onclick="backup()">💾 백업 파일 받기</button><label class="btn ed">📂 백업 불러오기<input type="file" accept=".json" hidden onchange="restore(this)"></label>
  <button class="btn ed" onclick="if(confirm('예시 데이터로 다시 채울까요? 현재 데이터는 사라집니다.${on?'\\n(서버 자료도 바뀌어 모든 관리자 화면에 반영됩니다)':''}')){const s=DB.settings;DB=demo();DB.settings=s;replaceAll()}">예시 데이터</button><button class="btn danger ed" onclick="if(confirm('모든 기록을 지울까요? (현장 목록은 유지)${on?'\\n(서버 자료도 지워집니다)':''}')){['hazards','edu','broadcasts','inspections','directives','notices','accidents','vworkers','vsum'].forEach(k=>DB[k]=[]);replaceAll()}">전체 기록 비우기</button></div>
  <div class="note">${on?'서버 연동 중에는 자료가 구글 시트에 저장됩니다. 백업 파일은 보관용입니다.':'데이터는 이 기기의 브라우저에 자동 저장됩니다. 다른 PC·휴대폰으로 옮기거나 보관하려면 백업 파일을 받아 두세요.'}</div></div></div>
  ${listPage('sites',{range:false,title:'현장 목록',sort:(a,b)=>a.name.localeCompare(b.name)})}${listPage('notices',{range:false,title:'공지사항'})}`;
@@ -933,7 +938,7 @@ function fieldHtml(f,v){
  return `<div class="fld ${f.wide||f.t==='textarea'||f.t==='photo'?'wide':''}"><span>${f.l}${f.req?' <b class="red">*</b>':''}</span>${inp}</div>`;
 }
 function openForm(key,id,preset={}){
- const sc=SCHEMAS[key],ro=!canEdit();
+ const sc=SCHEMAS[key],ro=!canEdit()||(ADMK.includes(key)&&online()&&!isAdmin());
  if(ro&&!id)return;
  if(key!=='sites'&&sc.fields.some(f=>f.t==='site')&&!DB.sites.length)return alert('먼저 설정에서 현장을 등록하세요.');
  let r=id?DB[key].find(x=>x.id===id):null;
@@ -967,7 +972,7 @@ function pickPhoto(inp,k){
 function clearPhoto(k){tmpPhotos[k]='';const p=$('#pv_'+k);p.removeAttribute('src');p.style.display='none'}
 
 /* ===================== 서버 연동 · 로그인 (구글 시트 + Apps Script) ===================== */
-const CFGK='hse_hq_server_cfg',TOKK='hse_hq_tok';
+const CFGK='hse_hq_server_cfg'+NS,TOKK='hse_hq_tok'+NS;
 const COLL_KEYS=['sites','hazards','edu','broadcasts','inspections','directives','notices','accidents','vworkers','vsum'];
 let CFG={url:'',token:'',id:'',name:'',title:'',role:'',keep:true,localOK:false},VER='',LOGIN_OPEN=false,FIRST_CONNECT=false,LOCALSNAP=null,PULLING=false,PENDING=0,HAS_ADMIN=true,AUTH_TAB='login',AUTH_MSG='';
 function loadCfg(){try{Object.assign(CFG,JSON.parse(localStorage.getItem(CFGK)||'{}'))}catch(e){}
@@ -981,7 +986,7 @@ const isAdmin=()=>logged()&&CFG.role==='관리자';
 const canEdit=()=>!online()||CFG.role==='관리자'||CFG.role==='입력';
 const ROLE_TXT={관리자:'관리자',입력:'입력 권한',열람:'열람 전용'};
 const whoAmI=()=>logged()&&CFG.name?CFG.name+(CFG.title&&CFG.title!==CFG.name?' '+CFG.title:''):DB.settings.role;
-function emptyDB(){const d={settings:{role:'대표이사',company:'이재성플랫폼'}};COLL_KEYS.forEach(k=>d[k]=[]);return d}
+function emptyDB(){const d={settings:{role:'대표이사',company:PRESET_COMPANY||'이재성플랫폼'}};COLL_KEYS.forEach(k=>d[k]=[]);return d}
 function normalize(k,r){const o={...r};((SCHEMAS[k]||{}).fields||[]).forEach(f=>{if((f.t==='number'||f.t==='pct')&&o[f.k]!==undefined)o[f.k]=o[f.k]===''?'':+o[f.k];if(f.t==='check')o[f.k]=isT(o[f.k])});return o}
 async function api(action,data={},url){
  let r,j;
@@ -1000,7 +1005,8 @@ function renderUser(){
  else if(online())b.innerHTML=`<button class="btn sm primary" onclick="lockApp()">로그인</button>`;
  else b.innerHTML=`👤<select id="roleSel" onchange="setRole(this.value)">${['대표이사','안전팀장','안전관리자'].map(o=>`<option ${o===DB.settings.role?'selected':''}>${o}</option>`).join('')}</select><button class="btn sm" onclick="CFG.localOK=false;saveCfg();lockApp()">서버 로그인</button>`;
 }
-function applyRole(){document.body.classList.toggle('ro',!canEdit());renderUser()}
+const ADMK=['sites','notices'];  /* 현장·공지는 관리자만 등록·수정 */
+function applyRole(){document.body.classList.toggle('ro',!canEdit());document.body.classList.toggle('notadm',online()&&!isAdmin());renderUser()}
 function authFail(msg){CFG.token='';saveCfg();setSync('err',msg);lockApp(msg)}
 async function pull(){
  if(!logged()||PULLING)return;PULLING=true;setSync('busy');
@@ -1112,9 +1118,13 @@ async function logout(){if(!confirm('로그아웃할까요?'))return;try{await a
 function disconnect(){if(!confirm('서버 연결을 해제할까요? 이 PC에만 저장되는 방식으로 돌아갑니다.'))return;CFG={url:'',token:'',id:'',name:'',title:'',role:'',keep:true,localOK:true};saveCfg();setSync('off');applyRole();render()}
 function connectServer(){CFG.localOK=false;CFG.url='';saveCfg();lockApp('')}
 function bakeFile(){
- const pat='const PRESET_'+"SERVER='';",i=SRC.indexOf(pat);
- if(i<0)return alert('이 파일은 이미 서버 주소가 들어간 파일입니다.');
- dl(SRC.slice(0,i)+'const PRESET_'+"SERVER='"+CFG.url.replace(/['\\]/g,'')+"';"+SRC.slice(i+pat.length),'index.html','text/html');
+ const p1='const PRESET_'+"SERVER='';",p2='const PRESET_'+"COMPANY='';";
+ if(SRC.indexOf(p1)<0)return alert('이 파일은 이미 서버 주소가 들어간 웹페이지용 파일입니다.\n원본 대시보드 파일에서 받아 주세요.');
+ const co=prompt('웹페이지에 표시할 회사(플랫폼) 이름을 확인하세요.\n예) A건설 안전플랫폼',DB.settings.company||'이재성플랫폼');if(co===null)return;
+ const name=co.trim()||'이재성플랫폼',q=v=>String(v).replace(/['\\<>]/g,'');
+ let out=SRC.replace(p1,'const PRESET_'+"SERVER='"+q(CFG.url)+"';").replace(p2,'const PRESET_'+"COMPANY='"+q(name)+"';");
+ out=out.replace(/<title>[^<]*<\/title>/,'<title>'+name.replace(/[<>&]/g,'')+' | 본사 통합 안전현황</title>');
+ dl(out,'index.html','text/html');toast('🌐 '+name+' 웹페이지용 index.html을 받았습니다');
 }
 async function changePw(){
  const o=$('#cpOld').value,n=$('#cpNew').value,n2=$('#cpNew2').value;
