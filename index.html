@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#06122a">
 <title>이재성 플랫폼 | 본사 통합 안전현황</title>
 <style>
-:root{--bg:#122546;--line:#1f3d70;--tx:#e6eefc;--mut:#8ea6cf;--blue:#2f80ff;--red:#ef4444;--org:#f59e0b;--yel:#facc15;--grn:#22c55e}
+:root{--bg:#18305a;--line:#1f3d70;--tx:#e6eefc;--mut:#8ea6cf;--blue:#2f80ff;--red:#ef4444;--org:#f59e0b;--yel:#facc15;--grn:#22c55e}
 *{box-sizing:border-box}
 body{margin:0;font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:var(--bg);color:var(--tx);font-size:14px}
 a{color:inherit}
-.top{height:58px;display:flex;align-items:center;gap:14px;padding:0 16px;background:#0d1b38;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+.top{height:58px;display:flex;align-items:center;gap:14px;padding:0 16px;background:#112349;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
 .logo{font-weight:800;font-size:21px;display:flex;align-items:center;gap:8px;white-space:nowrap}
 .logo svg{width:30px;height:30px}
 .top .sub{color:var(--mut);font-size:12px;white-space:nowrap}
@@ -21,7 +21,7 @@ a{color:inherit}
 .user select{background:transparent;border:none;color:#fff;font-weight:700;padding:4px}
 .hamb{display:none;background:none;border:1px solid var(--line);color:#fff;border-radius:8px;font-size:18px;padding:4px 10px;cursor:pointer}
 .wrap{display:flex}
-.side{width:212px;flex:none;background:#0f1f3f;border-right:1px solid var(--line);padding:10px 8px;position:sticky;top:58px;height:calc(100vh - 58px);overflow:auto}
+.side{width:212px;flex:none;background:#142852;border-right:1px solid var(--line);padding:10px 8px;position:sticky;top:58px;height:calc(100vh - 58px);overflow:auto}
 .side .grp{color:#b8c9e8;font-size:13px;margin:14px 6px 6px;font-weight:700;padding-top:12px;border-top:1px solid var(--line)}
 .side a{display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:8px;color:#c9d7f0;text-decoration:none;cursor:pointer;font-size:14px;margin:1px 0}
 .side a:hover{background:#0f2550}
@@ -42,7 +42,7 @@ textarea{resize:vertical}
 .btn.danger{background:#5b1620;border-color:#a3243a;color:#fff}
 .btn.sm{padding:4px 10px;font-size:12px}
 .btn.ghost{background:transparent;border-color:#2f6fe0;color:#cfe0ff}
-.panel{background:linear-gradient(180deg,#0e2350,#0b1c41);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.panel{background:linear-gradient(180deg,#122e68,#0e2454);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
 .panel h3{margin:0 0 12px;font-size:17px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .panel h3 small{font-size:12px;color:var(--mut);font-weight:500}
 .panel h3 .lnk{font-size:12px;color:#9cc0ff;font-weight:500;cursor:pointer}
@@ -79,7 +79,7 @@ textarea{resize:vertical}
 .sbr .at i{white-space:nowrap;padding:0 6px;min-width:34px}
 .sbr .at em{font-style:normal;font-size:11px;color:#4ade80;padding-left:6px;display:flex;align-items:center}
 .sbr .sv{text-align:right;font-size:12px;white-space:nowrap}
-.sitebox{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px;align-items:start}
+.sitebox{display:grid;grid-template-columns:170px minmax(0,1fr);gap:10px;align-items:start}
 .map svg{width:100%;height:auto;display:block}
 .map .pin{cursor:pointer}
 .legend{display:flex;gap:12px;font-size:13px;color:#c9d7f0;font-weight:500}
@@ -168,6 +168,20 @@ table.t{width:100%;border-collapse:collapse;font-size:13px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .rpt-head{display:none}
 body.ro .ed{display:none!important}
+.hrsec{border-top:1px solid var(--line);margin-top:6px}
+.hrbox{display:grid;grid-template-columns:118px minmax(0,1fr);gap:10px}
+.hrleft{display:flex;flex-direction:column;gap:8px}
+.hrstat{background:#0a1a3a;border:1px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer;text-align:center}
+.hrstat span{display:block;font-size:12px;color:#c9d7f0;background:#13306a;border-radius:6px;padding:2px 0;margin:-2px -4px 4px}
+.hrstat.on span{background:#2f80ff;color:#fff}.hrstat.hot{border-color:#dc3540}.hrstat.hot span{background:#5b1620}
+.hrstat b{font-size:24px}.hrstat b small{font-size:13px;margin-left:2px}
+.hrgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.hrt{background:#0a1a3a;border:1px solid var(--line);border-radius:10px;padding:8px 4px;text-align:center;cursor:pointer;opacity:.6}
+.hrt.has{opacity:1}.hrt:hover{border-color:#2f80ff}.hrt.warn{border-color:#dc3540;box-shadow:0 0 0 1px #dc354055 inset}
+.hrt svg{width:34px;height:34px;stroke:#dbe7ff;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;display:block;margin:2px auto 4px}
+.hrt span{display:block;font-size:10.5px;letter-spacing:-.5px;color:#c9d7f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hrt b{font-size:18px}.hrt b small{font-size:11px;margin-left:1px}
+@media (max-width:760px){.hrbox{grid-template-columns:1fr}.hrleft{flex-direction:row}.hrleft>div:first-child{display:none}.hrstat{flex:1}.hrgrid{grid-template-columns:repeat(4,1fr)}}
 body.notadm .adm{display:none!important}
 body.locked .top,body.locked .wrap{display:none!important}
 #auth{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto;background:radial-gradient(1200px 600px at 20% 0%,#1b4a9a55,transparent),linear-gradient(160deg,#0b1f45,#06122a 60%)}
@@ -245,12 +259,160 @@ body.locked .top,body.locked .wrap{display:none!important}
  .rpt-head{display:block}
  .mut{color:#444}
 }
+
+/* ===================== 네이버 스타일 밝은 테마 ===================== */
+:root{--bg:#f2f4f6;--line:#e3e5e8;--tx:#222;--mut:#767678;--blue:#03c75a;--red:#e5383b;--org:#e08a00;--grn:#03a94f;--yel:#e0a800}
+body{background:#f2f4f6;color:#222}
+.top{background:#fff;border-bottom:1px solid #e3e5e8;box-shadow:0 1px 0 #0000000a}
+.logo{color:#222}.logo svg path:first-child{fill:#03c75a}
+.top .sub,.top .clock,.top .slog{color:#767678}
+.user{border-left-color:#e3e5e8}.user select{color:#222}.user b{color:#222}
+.hamb{color:#222;border-color:#e3e5e8;background:#fff}
+.side{background:#fff;border-right:1px solid #e3e5e8}
+.side .grp{color:#999;border-top-color:#eef0f2}
+.side a{color:#404040}.side a:hover{background:#f5f7f8}
+.side a.on{background:#eafaf1;color:#03a94f}
+.side .ico{filter:saturate(.9)}
+input,select,textarea{background:#fff;border:1px solid #d9dce1;color:#222}
+input:focus,select:focus,textarea:focus{outline:2px solid #03c75a55;border-color:#03c75a}
+input:disabled,select:disabled,textarea:disabled{background:#f5f6f7;color:#222;opacity:1}
+input[type=date]{color-scheme:light}
+.btn{background:#fff;border:1px solid #d9dce1;color:#333}
+.btn:hover{filter:none;background:#f5f7f8}
+.btn.primary{background:#03c75a;border-color:#03c75a;color:#fff}.btn.primary:hover{background:#02b351}
+.btn.danger{background:#fff;border-color:#f3b4b6;color:#e5383b}
+.btn.ghost{background:#fff;border-color:#03c75a;color:#03a94f}
+.panel{background:#fff;border:1px solid #e3e5e8;box-shadow:0 1px 3px #0000000d}
+.panel h3{color:#111}.panel h3 small{color:#888}
+.panel h3 .lnk{color:#767678}
+.kpi:hover,.card:hover{border-color:#03c75a}
+.kpi .lb{color:#333}.kpi .s{color:#888}
+.chip{background:#f5f6f7;border-color:#e3e5e8;color:#555}
+.chip.on{background:#03c75a;border-color:#03c75a;color:#fff}
+.legend{color:#666}
+.t th{color:#888;border-bottom-color:#e3e5e8}
+.t td{border-bottom-color:#f0f1f3}
+.t tr.click:hover td,.sbr:hover,.rrow:hover,.abar:hover{background:#f5f7f8}
+.bd.o{color:#e08a00}.bd.g{color:#03a94f}.bd.b{color:#1a6ed8}.bd.gr{color:#888}
+.red{color:#e5383b}.org{color:#e08a00}.grn{color:#03a94f}.mut{color:#888}
+.bar .tr,.prog,.stk,.at,.sbr .at{background:#eef0f2}
+.alertp{background:#fff6f6;border-color:#f5c2c4}
+.alerts .it,.vwalert{border-bottom-color:#f6dcdd}
+.alerts .it:hover{background:#fff0f0}
+.alerts .tx b{color:#222}
+.stat{background:#f7f9fa;border-color:#e3e5e8}
+.stat .si{background:#e6f0fd}
+.stat.r{background:#fff1f1;border-color:#f5c2c4}.stat.r .si{background:#e5383b!important}
+.stat .l{color:#767678}
+.notice li{border-bottom-color:#f0f1f3;color:#333}.notice li:before{color:#03c75a}
+.slogan{background:linear-gradient(150deg,#eafaf1 0%,#f7fcf9 60%,#fff 100%);border-color:#d8f0e2}
+.slogan b{color:#0b3d22}.slogan p{color:#5b6b62}
+.mini div,.gal .pair div{background:#f5f6f7}
+.modal-bg{background:#0006}
+.modal{background:#fff;border-color:#e3e5e8;box-shadow:0 20px 60px #0003}
+.modal .mh,.modal .mf{border-color:#e3e5e8}.modal .mh button{color:#888}
+.note{background:#f7f9fa;border-color:#d9dce1;color:#555}
+.sumrow b{color:#222}
+.hrstat{background:#f7f9fa;border-color:#e3e5e8}
+.hrstat span{background:#eef0f2;color:#555}
+.hrstat.on span{background:#03c75a;color:#fff}
+.hrstat.hot{border-color:#f5c2c4;background:#fff6f6}.hrstat.hot span{background:#fde2e3;color:#e5383b}
+.hrstat b{color:#222}
+.hrt{background:#f7f9fa;border-color:#e3e5e8}.hrt:hover{border-color:#03c75a}
+.hrt.warn{border-color:#e5383b;background:#fff6f6;box-shadow:none}
+.hrt svg{stroke:#333}.hrt span{color:#666}.hrt b{color:#222}
+.achips div{background:#f7f9fa}
+.achips span{color:#767678}
+.onesite{background:#eafaf1;border-color:#03c75a;color:#222}
+.ckb{background:#fff;border-color:#d9dce1}
+.vtg.el{color:#6d4fd0;border-color:#c9bdf3}.vtg.bp{color:#c0264d;border-color:#f3b9c8}.vtg.dm{color:#a06800;border-color:#f0d49a}
+.vbanner{background:#fff1f1;border-color:#f5c2c4;color:#b4232f}
+.sync{background:#fff;border-color:#e3e5e8}.sync.ok{color:#03a94f;border-color:#bfe9cf}.sync.err{color:#e5383b}.sync.busy{color:#e08a00}
+#toast{background:#222;border-color:#222}
+#auth{background:#f2f4f6}
+.au-box{background:#fff;border-color:#e3e5e8;box-shadow:0 10px 40px #0000001a}
+.au-brand b{color:#222}
+.au-tabs{background:#f2f4f6}.au-tabs button{color:#767678}.au-tabs button.on{background:#03c75a;color:#fff}
+.au-link{color:#03a94f}
+.au-msg{background:#fff1f1;border-color:#f5c2c4;color:#b4232f}.au-msg.ok{background:#eafaf1;border-color:#bfe9cf;color:#0b6b35}
+.thc{background:#f5f6f7}
+@media (max-width:760px){.side{box-shadow:4px 0 20px #0002}}
+
+/* ===== 주요 제목 강조 (강하게) ===== */
+.phead h1{font-size:32px;font-weight:900;letter-spacing:-1px;color:#0b3d22;display:flex;align-items:center;gap:12px}
+.phead h1::before{content:'';width:10px;height:34px;border-radius:5px;background:linear-gradient(180deg,#03c75a,#02a24a);flex:none}
+.phead p{font-size:13.5px}
+.panel h3{font-size:20px;font-weight:900;letter-spacing:-.6px;color:#0b3d22;margin:-14px -16px 14px;padding:13px 16px 12px 18px;background:linear-gradient(90deg,#e3f8ec,#f4fcf7 60%,#fff);border-bottom:1px solid #d3eedd;border-radius:12px 12px 0 0;position:relative}
+.panel h3::before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:5px;border-radius:0 4px 4px 0;background:#03c75a}
+.panel h3 small{font-size:12.5px;font-weight:600;color:#5b7a68}
+.panel h3 .lnk{font-size:13px;font-weight:800;color:#03a94f;background:#fff;border:1px solid #bfe9cf;border-radius:999px;padding:3px 10px}
+.hrsec h3{margin-top:-14px}
+.alertp h3{background:linear-gradient(90deg,#fde3e4,#fff5f5 60%,#fff);border-bottom-color:#f8cfd1}
+.alertp h3::before{background:#e5383b}
+.alertp h3 > span:first-child{font-size:17px!important;padding:5px 16px!important}
+.alertp h3 .lnk{color:#e5383b;border-color:#f5c2c4}
+.kpi .lb{display:block;font-size:19px;font-weight:900;color:#000;letter-spacing:-.8px;margin-bottom:4px;white-space:nowrap}
+.kpi .s{margin-top:2px}
+.kpi{gap:10px}.kpi>div:last-child{min-width:0}
+.kpi .ic{width:48px;height:48px}
+@media (max-width:1400px){.kpi .lb{font-size:18px}}
+.kpi .v{font-size:42px}
+.panel h3 > span:first-child{display:inline-flex;align-items:center;gap:6px}
+@media (max-width:760px){.phead h1{font-size:23px}.phead h1::before{height:24px}.panel h3{font-size:17px}}
+.map .mlb{font-size:10px;font-weight:700;fill:#33557f;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.map .pin{cursor:pointer;transition:transform .15s}.map .pin:hover circle:last-child{stroke-width:3}
+.map .pulse{transform-box:fill-box;transform-origin:center;animation:kpulse 1.8s ease-out infinite}
+@keyframes kpulse{0%{transform:scale(.8);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+
+/* ===== 인쇄 머리글 · 결재란 ===== */
+#prt{display:none}
+body.prep #prt{display:block;margin-bottom:14px}
+.prt-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fffbe6;border:1px solid #f0d68a;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:13px}
+.prt-bar span{color:#7a5d00}.prt-bar .sp{flex:1}
+.prt-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;background:#fff;border:1px solid #e3e5e8;border-radius:10px;padding:16px 18px}
+.prt-tl h2{margin:0 0 8px;font-size:26px;font-weight:900;color:#000;letter-spacing:-.6px}
+.prt-tl p{margin:0;font-size:13px;color:#444}
+.prt-sign{border-collapse:collapse;flex:none}
+.prt-sign th,.prt-sign td{border:1px solid #6b7a99;text-align:center;font-size:13px;color:#222}
+.prt-sign th{background:#dfe6f3;font-weight:800;padding:5px 8px;min-width:78px}
+.prt-sign th.sd{min-width:0;width:30px;padding:4px;line-height:2.1;font-weight:800}
+.prt-sign td{height:62px;vertical-align:bottom;padding:4px;font-size:12px;white-space:pre-line}
+body.prep [contenteditable="true"]{outline:1px dashed #b7bfcc;outline-offset:1px;cursor:text}
+body.prep [contenteditable="true"]:hover{background:#fffbe6}
+body.prep [contenteditable="true"]:focus{outline:2px solid #03c75a;background:#f3fcf7}
+@media print{
+ @page{size:A4 landscape;margin:10mm}
+ body{print-color-adjust:exact;-webkit-print-color-adjust:exact;background:#fff!important}
+ #prt{display:block!important;margin-bottom:10px}
+ .prt-head{border:none;padding:0 0 10px;border-bottom:2px solid #000;border-radius:0}
+ .prt-sign th{background:#dfe6f3!important}
+ [contenteditable="true"]{outline:none!important;background:none!important}
+ .phead h1,.phead p{display:none}.phead{margin:0}
+ .wrap,main{display:block}
+ .panel{box-shadow:none!important}
+ .kpi,.sumrow .panel,.stat{break-inside:avoid}
+ .onesite,#toast,.modal-bg{display:none!important}
+}
+
+/* ===== 메뉴 버튼(맨 위 왼쪽) · 마우스를 대면 메뉴 펼침 ===== */
+.hamb{display:inline-flex!important;align-items:center;justify-content:center;width:38px;height:38px;padding:0;border:none!important;border-radius:10px;background:linear-gradient(180deg,#03c75a,#02a24a)!important;box-shadow:0 4px 12px rgba(3,199,90,.35);cursor:pointer;flex:none;animation:hpulse 2.4s ease-in-out infinite}
+.hamb i{display:block;width:18px;height:2.5px;border-radius:2px;background:#fff;box-shadow:0 -6px 0 #fff,0 6px 0 #fff}
+@keyframes hpulse{0%,100%{box-shadow:0 4px 12px rgba(3,199,90,.35)}50%{box-shadow:0 4px 18px rgba(3,199,90,.6),0 0 0 4px rgba(3,199,90,.15)}}
+.top{gap:12px}
+@media (min-width:761px){
+ .wrap{padding-left:0}
+ .side{position:fixed;left:0;top:58px;bottom:0;height:auto;width:240px;z-index:60;overflow-y:auto;transform:translateX(-102%);transition:transform .22s ease,box-shadow .22s;background:#fff;border-right:1px solid #e3e5e8;padding:10px 8px}
+ .side.hov{transform:none;box-shadow:8px 0 30px rgba(0,0,0,.14)}
+ .side a{padding:10px 12px;gap:14px}.side .ico{flex:none;width:22px}
+ .side a.on{box-shadow:inset 3px 0 0 #03c75a}
+}
+@media print{.wrap{padding-left:0!important}}
 </style>
 </head>
 <body>
 <header class="top">
- <button class="hamb" onclick="$('#side').classList.toggle('open')">☰</button>
- <div class="logo" onclick="state.site='all';go('overview')" title="메인 화면으로" style="cursor:pointer"><svg viewBox="0 0 32 32"><path d="M16 2 4 7v8c0 7.5 5.1 13.4 12 15 6.9-1.6 12-7.5 12-15V7z" fill="#2f80ff"></path><path d="m10 16 4 4 8-8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"></path></svg><span id="coName">이재성플랫폼</span></div>
+ <button class="hamb" id="mbtn" onclick="menuBtn()" title="메뉴 (마우스를 대면 펼쳐집니다)"><i></i></button>
+ <div class="logo" onclick="state.site='all';go('overview')" title="메인 화면으로" style="cursor:pointer"><span id="coName">이재성플랫폼</span></div>
  <div class="sub">중대재해 예방을 위한 근로자 참여형 안전관리 플랫폼</div>
  <div class="sp"></div>
  <div class="clock" id="clock"></div>
@@ -288,7 +450,15 @@ const REGIONS={'서울':[126.98,37.57],'인천':[126.70,37.46],'고양':[126.83,
 
 /* ===================== 스키마 (입력 항목 정의) ===================== */
 const VTR=['직영','형틀','철근','알폼','갱폼','해체정리','견출미장','시스템','콘크리트','용역'];
+const HRT=['거푸집·동바리','철근 조립','콘크리트 타설','양중(크레인)','갱폼·알폼','고소·비계','화기(용접·용단)','개구부·단부'];
 const SCHEMAS={
+ hrwork:{title:'고위험작업',cols:['date','siteId','type','company','location','workers','status','permit','supervisor'],fields:[
+  {k:'date',l:'작업일',t:'date',req:1},{k:'siteId',l:'현장',t:'site',req:1},
+  {k:'type',l:'고위험작업 공종',t:'select',o:HRT},{k:'status',l:'작업상태',t:'select',o:['작업예정','작업중','작업완료','작업중지']},
+  {k:'company',l:'작업 업체',t:'text',ph:'예) ○○건설(철콘)'},{k:'location',l:'작업 위치',t:'text',ph:'예) 지하2층 B구역, 12층 슬래브'},
+  {k:'workers',l:'투입 인원',t:'number'},{k:'supervisor',l:'관리감독자',t:'text'},
+  {k:'permit',l:'작업허가서·작업계획서 확인',t:'check'},{k:'measures',l:'안전조치 사항',t:'textarea',ph:'예) 동바리 수직도 확인, 안전대 부착설비, 신호수 배치'},
+  {k:'photo',l:'작업 사진',t:'photo'}]},
  vworkers:{title:'취약근로자',cols:['code','name','siteId','trade','age','_health','status','note'],fields:[
   {k:'code',l:'코드(사번)',t:'text'},{k:'name',l:'이름',t:'text',req:1},
   {k:'siteId',l:'현장',t:'site',req:1},{k:'trade',l:'직종',t:'select',o:VTR},
@@ -358,6 +528,7 @@ function load(){
  if(!DB.accidents)DB.accidents=(!online()&&DB.sites.some(x=>x.id==='s1'))?demoAcc():[];
  if(!DB.vworkers)DB.vworkers=(!online()&&DB.sites.some(x=>x.id==='s1'))?demoVW():[];
  DB.vsum=DB.vsum||[];syncVTR();
+ if(!DB.hrwork)DB.hrwork=(!online()&&DB.sites.some(x=>x.id==='s1'))?demoHR():[];
 }
 function save(){try{localStorage.setItem(LS,JSON.stringify(DB))}catch(e){alert('저장 공간이 부족합니다. 사진 수를 줄이거나 백업 후 정리해 주세요.')}}
 
@@ -393,7 +564,7 @@ function demo(){
  sites.forEach((st,i)=>{for(let k=0;k<2;k++){const sc=72+Math.floor(rnd()*27);ins.push({id:uid()+'i'+k+i,date:addDays(T,-k*20-Math.floor(rnd()*10)),siteId:st.id,kind:k?'안전팀 정기점검':'대표이사 점검',inspector:k?'본사 안전팀':'대표이사',score:sc,result:sc>=85?'적합':sc>=75?'개선필요':'불량',findings:sc>=85?'특이사항 없음':'개구부 관리 및 정리정돈 보완 요망'})}});
  const directives=[['외국인 근로자 다국어 교육 강화','안전팀',100],['철근 작업장 안전시설 보강','현장팀',75],['모든 현장 위험성평가 재실시','안전팀',50],['하절기 폭염대책 강화','총무팀',100],['본사 정기점검 실시','안전팀',100]].map((d,i)=>({id:uid()+'d'+i,date:addDays(T,-25+i*3),text:d[0],dept:d[1],due:addDays(T,5+i*2),progress:d[2],note:''}));
  const notices=[['중대재해처벌법 주요 개정사항 안내',3],['가을철 화재예방 안전수칙 안내',5],['외국인 근로자 교육자료 업데이트',7],['안전보건관리규정 개정 안내',10],['본사 정기점검 계획 안내',13]].map((n,i)=>({id:uid()+'n'+i,date:addDays(T,-n[1]),title:n[0],body:''}));
- return {sites,hazards:hz,edu,broadcasts:bc,inspections:ins,directives,notices,accidents:demoAcc(),vworkers:demoVW(),vsum:[],settings:{role:'대표이사',company:'이재성플랫폼'}};
+ return {sites,hazards:hz,edu,broadcasts:bc,inspections:ins,directives,notices,accidents:demoAcc(),vworkers:demoVW(),vsum:[],hrwork:demoHR(),settings:{role:'대표이사',company:'이재성플랫폼'}};
 }
 
 function demoAcc(){
@@ -438,7 +609,7 @@ function siteStats(st){
   tgt,att,miss:Math.max(0,tgt-att),rate:tgt?Math.round(att/tgt*100):null,eduCnt:ed.length,recent,
   insCnt:ins.length,insAvg:ins.length?Math.round(sum(ins,x=>x.score)/ins.length):null,bcCnt:sum(bc,x=>x.count||1),sanjae:ac.filter(x=>x.kind==='산재').length,gongsang:ac.filter(x=>x.kind==='공상').length,near:ac.filter(x=>x.kind==='아차사고').length,status};
 }
-const BADGE={'산재':'r','공상':'o','아차사고':'b','조사중':'r','대책수립':'o','조치완료':'g','미조치':'r','위험':'r','불량':'r','조치중':'o','주의':'o','진행중':'o','개선필요':'o','완료':'g','양호':'g','적합':'g'};
+const BADGE={'작업중':'b','작업예정':'gr','작업완료':'g','작업중지':'r','산재':'r','공상':'o','아차사고':'b','조사중':'r','대책수립':'o','조치완료':'g','미조치':'r','위험':'r','불량':'r','조치중':'o','주의':'o','진행중':'o','개선필요':'o','완료':'g','양호':'g','적합':'g'};
 const badge=v=>`<span class="bd ${BADGE[v]||'gr'}">${esc(v)}</span>`;
 const rateColor=r=>r==null?'#475569':r>=95?'#22c55e':r>=85?'#facc15':r>=75?'#f59e0b':'#ef4444';
 function dueLabel(r){
@@ -453,7 +624,7 @@ function dueLabel(r){
 const MENU=[
  {k:'overview',i:'📊',t:'전체 현황'},{k:'hazards',i:'⚠️',t:'위험요인 관리'},{k:'history',i:'🗂️',t:'조치 이력'},{k:'accidents',i:'🚑',t:'산재·공상 현황'},{k:'compare',i:'📑',t:'현장별 비교 보고서'},{k:'vw',i:'🩺',t:'취약근로자 현황'},
  {g:'본사 안전팀 메뉴'},
- {k:'perf',i:'🏗️',t:'현장별 실적'},{k:'open',i:'⛔',t:'미조치 사항'},{k:'repeat',i:'🔁',t:'반복 부적합'},{k:'eduRate',i:'🎓',t:'교육 이행률'},{k:'inspect',i:'📋',t:'현장 점검'},{k:'directives',i:'📌',t:'대표이사 지시사항'},
+ {k:'perf',i:'🏗️',t:'현장별 실적'},{k:'open',i:'⛔',t:'미조치 사항'},{k:'hrw',i:'🏗️',t:'고위험작업 현황'},{k:'repeat',i:'🔁',t:'반복 부적합'},{k:'eduRate',i:'🎓',t:'교육 이행률'},{k:'inspect',i:'📋',t:'현장 점검'},{k:'directives',i:'📌',t:'대표이사 지시사항'},
  {g:'현장 관리자 메뉴'},
  {k:'broadcast',i:'📢',t:'번역 방송'},{k:'qr',i:'🔳',t:'QR 참여'},{k:'edu',i:'📘',t:'교육 기록'},{k:'photos',i:'📷',t:'사진 등록'},{k:'improve',i:'✅',t:'위험요인 개선'},
  {g:''},{k:'settings',i:'⚙️',t:'설정 / 현장·공지 관리'},{k:'members',i:'👥',t:'회원 관리',adm:1}];
@@ -466,6 +637,7 @@ const PAGES={
  compare:{t:'현장별 비교 보고서',d:'현장별 핵심 지표를 비교합니다. 인쇄 버튼으로 보고서를 출력할 수 있습니다.',r:pgCompare},
  perf:{t:'현장별 실적',d:'현장 카드를 누르면 상세 현황을 볼 수 있습니다.',r:pgPerf},
  open:{t:'미조치 사항',d:'아직 조치가 끝나지 않은 위험요인입니다 (기간과 무관하게 전체 표시, 기한 임박 순).',r:()=>listPage('hazards',{range:false,filter:h=>h.status!=='완료',sort:(a,b)=>(a.due||'9').localeCompare(b.due||'9'),title:'미조치·조치중 위험요인'})},
+ hrw:{t:'고위험작업 현황',d:'현장별 고위험작업(철근콘크리트 공사 기준) 작업계획·진행 현황입니다. 공종 아이콘을 누르면 해당 작업만 봅니다.',r:pgHR},
  repeat:{t:'반복 부적합',d:'같은 현장에서 같은 유형의 부적합(위험요인)이 2회 이상 발생한 항목입니다.',r:pgRepeat},
  eduRate:{t:'교육 이행률',d:'현장별 교육 대상 대비 이수 인원 비율입니다.',r:pgEduRate},
  inspect:{t:'현장 점검',d:'대표이사·본사 안전팀 현장 점검 기록입니다.',r:()=>listPage('inspections')},
@@ -481,20 +653,55 @@ const PAGES={
 function nav(){
  $('#side').innerHTML=MENU.filter(m=>!m.adm||isAdmin()).map(m=>m.g!==undefined?`<div class="grp">${m.g}</div>`:`<a class="${m.h?'head':''} ${!m.h&&state.page===m.k?'on':''}" onclick="${m.k==='overview'?"state.site='all';":''}go('${m.k}')"><span class="ico">${m.i}</span>${m.t}${m.k==='members'&&PENDING?` <b class="pend">${PENDING}</b>`:''}</a>`).join('');
 }
-function go(p){state.page=p;location.hash=p;$('#side').classList.remove('open');render();window.scrollTo(0,0)}
+let MT=null;
+function menuOpen(){clearTimeout(MT);if(innerWidth>760)$('#side').classList.add('hov')}
+function menuClose(){clearTimeout(MT);MT=setTimeout(()=>$('#side').classList.remove('hov'),250)}
+function menuBtn(){if(innerWidth>760){menuOpen()}else $('#side').classList.toggle('open')}
+setTimeout(()=>{const b=$('#mbtn'),sd=$('#side');if(!b||!sd)return;b.addEventListener('mouseenter',menuOpen);b.addEventListener('mouseleave',menuClose);sd.addEventListener('mouseenter',menuOpen);sd.addEventListener('mouseleave',menuClose)},0);
+function go(p){state.page=p;location.hash=p;const sd=$('#side');sd.classList.remove('open','hov');clearTimeout(MT);render();window.scrollTo(0,0)}
+document.addEventListener('DOMContentLoaded',()=>{});
+
 function render(){
+ if(document.body.classList.contains('prep')&&document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#prt')){PRT_PEND=true;return}
  nav();
  const P=PAGES[state.page];const role=DB.settings.role;
  $('#coName').textContent=DB.settings.company||'이재성플랫폼';document.title=(DB.settings.company||'이재성플랫폼')+' | 본사 통합 안전현황';renderUser();
  const head=`<div class="phead"><div><h1>${P.t}</h1>${P.d?`<p>${P.d}</p>`:''}</div>
  <div class="filters">📅 <input type="date" value="${state.from}" onchange="state.from=this.value;render()"> ~ <input type="date" value="${state.to}" onchange="state.to=this.value;render()">
  <select onchange="state.site=this.value;render()"><option value="all">전체 현장</option>${DB.sites.map(s=>`<option value="${s.id}" ${state.site===s.id?'selected':''}>${esc(s.name)}</option>`).join('')}</select>
- <button class="btn ghost" onclick="manualSync()">⟳ 새로고침</button></div></div>`;
+ <button class="btn ghost" onclick="manualSync()">⟳ 새로고침</button><button class="btn primary" onclick="printPrep()">🖨 인쇄</button></div></div>`;
  const one=state.site!=='all'?`<div class="onesite">📍 지금 <b>${esc(siteName(state.site))}</b>만 보고 있습니다 <button class="btn primary sm" onclick="state.site='all';render()">↩ 전체 현장으로 돌아가기</button></div>`:'';
- $('#main').innerHTML=head+one+P.r();
+ $('#main').innerHTML=prtHead(P.t)+head+one+P.r();
  tick();
 }
 
+
+/* ===================== 인쇄물 공통 머리글 · 결재란 (편집 가능) ===================== */
+const PRTK='hse_print'+(typeof NS!=='undefined'?NS:'');let PRT_PEND=false;
+const PRT_DEF={labels:['담 당','소 장','대표이사'],cells:['','',''],titles:{},side:'결 재'};
+function prtCfg(){let c;try{c=JSON.parse(localStorage.getItem(PRTK)||'null')}catch(e){}c=Object.assign(JSON.parse(JSON.stringify(PRT_DEF)),c||{});while(c.cells.length<c.labels.length)c.cells.push('');c.cells=c.cells.slice(0,c.labels.length);return c}
+function prtSave(c){try{localStorage.setItem(PRTK,JSON.stringify(c))}catch(e){}}
+function prtHead(t){
+ const c=prtCfg(),title=c.titles[state.page]||(/보고서$/.test(t)||state.page==='overview'?t:t+' 보고서');
+ const site=state.site==='all'?'전체 현장':siteName(state.site);
+ return `<div id="prt"><div class="prt-bar noprint"><b>🖨 인쇄 미리보기</b><span>회색 점선 칸의 글자를 눌러 바로 고칠 수 있습니다 (제목·결재 칸 이름·서명란)</span><span class="sp"></span>
+ <button class="btn sm" onclick="prtCol(1)">＋ 결재칸 추가</button><button class="btn sm" onclick="prtCol(-1)">－ 결재칸 빼기</button><button class="btn sm" onclick="prtReset()">기본값으로</button>
+ <button class="btn primary" onclick="window.print()">🖨 인쇄하기</button><button class="btn" onclick="printClose()">닫기</button></div>
+ <div class="prt-head"><div class="prt-tl"><h2 contenteditable="true" spellcheck="false" oninput="prtSet('title',this.innerText)">${esc(title)}</h2>
+ <p><span contenteditable="true" spellcheck="false">${esc(DB.settings.company||'이재성플랫폼')}</span> · 대상: ${esc(site)} · 기간: ${state.from} ~ ${state.to} · 출력일: ${today()} · 작성: <span contenteditable="true" spellcheck="false">${esc(whoAmI())}</span></p></div>
+ <table class="prt-sign"><tr><th rowspan="2" class="sd" contenteditable="true" spellcheck="false" oninput="prtSet('side',this.innerText)">${esc(c.side).split('').join('<br>')}</th>
+ ${c.labels.map((l,i)=>`<th contenteditable="true" spellcheck="false" oninput="prtSet('label',this.innerText,${i})">${esc(l)}</th>`).join('')}</tr>
+ <tr>${c.cells.map((v,i)=>`<td contenteditable="true" spellcheck="false" oninput="prtSet('cell',this.innerText,${i})">${esc(v)}</td>`).join('')}</tr></table></div></div>`;
+}
+function prtSet(k,v,i){const c=prtCfg();v=String(v).replace(/\n+/g,k==='cell'?'\n':'').trim();
+ if(k==='title')c.titles[state.page]=v;else if(k==='side')c.side=v;else if(k==='label')c.labels[i]=v;else c.cells[i]=v;prtSave(c)}
+function prtCol(d){const c=prtCfg();if(d>0){if(c.labels.length>=6)return toast('결재칸은 6칸까지 넣을 수 있습니다');c.labels.push('결 재');c.cells.push('')}else{if(c.labels.length<=1)return;c.labels.pop();c.cells.pop()}prtSave(c);render()}
+function prtReset(){const c=prtCfg();c.labels=[...PRT_DEF.labels];c.cells=['','',''];c.side=PRT_DEF.side;delete c.titles[state.page];prtSave(c);render();toast('결재란을 기본값으로 되돌렸습니다')}
+function printPrep(){document.body.classList.add('prep');render();window.scrollTo(0,0);toast('✏ 제목·결재란을 눌러 수정한 뒤 「인쇄하기」를 누르세요')}
+function printClose(){document.body.classList.remove('prep');if(PRT_PEND){PRT_PEND=false}render()}
+document.addEventListener('focusout',e=>{if(PRT_PEND&&e.target.closest&&e.target.closest('#prt')){setTimeout(()=>{if(!document.activeElement.closest||!document.activeElement.closest('#prt')){PRT_PEND=false;render()}},50)}});
+window.addEventListener('beforeprint',()=>{if(!document.body.classList.contains('prep')){document.body.classList.add('prep','autoprep');render()}});
+window.addEventListener('afterprint',()=>{if(document.body.classList.contains('autoprep')){document.body.classList.remove('prep','autoprep');render()}});
 /* ===================== 대시보드 ===================== */
 const KICON={site:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg>',
  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 12.5 4 4 8-9"/></svg>',
@@ -502,19 +709,27 @@ const KICON={site:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 function koreaMap(rows){
  const X=l=>(l-125.6)*48,Y=a=>(38.75-a)*57;
  const KOR=[[126.1,37.73],[126.55,37.78],[126.7,37.95],[127.1,38.3],[127.55,38.32],[128.1,38.33],[128.36,38.62],[128.6,38.25],[128.95,37.85],[129.25,37.4],[129.42,36.95],[129.45,36.45],[129.55,36.05],[129.45,35.6],[129.3,35.3],[129.1,35.1],[128.75,35.0],[128.45,34.85],[128.05,34.85],[127.75,34.72],[127.5,34.62],[127.3,34.48],[127.0,34.55],[126.75,34.38],[126.45,34.35],[126.3,34.6],[126.4,34.95],[126.35,35.25],[126.55,35.55],[126.7,35.9],[126.6,36.15],[126.5,36.45],[126.25,36.65],[126.15,36.9],[126.45,37.05],[126.8,37.0],[126.75,37.3],[126.6,37.45],[126.4,37.55]];
- const pts=KOR.map(p=>X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+ const P=KOR.map(p=>[X(p[0]),Y(p[1])]),n=P.length;
+ let d=`M${P[0][0].toFixed(1)},${P[0][1].toFixed(1)}`;
+ for(let i=0;i<n;i++){const p0=P[(i-1+n)%n],p1=P[i],p2=P[(i+1)%n],p3=P[(i+2)%n],t=.18;
+  d+=` C${(p1[0]+(p2[0]-p0[0])*t).toFixed(1)},${(p1[1]+(p2[1]-p0[1])*t).toFixed(1)} ${(p2[0]-(p3[0]-p1[0])*t).toFixed(1)},${(p2[1]-(p3[1]-p1[1])*t).toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`}
+ d+='Z';
  const used={};
- const pins=rows.map(r=>{const c=REGIONS[r.st.region]||REGIONS['서울'];const key=r.st.region;const n=used[key]=(used[key]||0)+1;
-  const x=X(c[0])+(n-1)*7,y=Y(c[1])-(n-1)*3;const col=r.status==='위험'?'#ef4444':r.status==='주의'?'#f5b40b':'#22c55e';
-  return `<g class="pin" transform="translate(${x.toFixed(1)},${y.toFixed(1)})" onclick="showSite('${r.st.id}')"><title>${esc(r.st.name)} · ${r.status}</title><path d="M0,0 C-5,-7 -7,-10 -7,-13 a7,7 0 1,1 14,0 c0,3 -2,6 -7,13z" fill="${col}" stroke="#fff" stroke-width="1.2"/><circle cy="-13" r="2.6" fill="#fff"/></g>`}).join('');
- return `<svg viewBox="0 0 215 330"><defs><linearGradient id="kg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2156b8"/><stop offset="1" stop-color="#173f8a"/></linearGradient></defs>
- <polygon points="${pts}" fill="url(#kg)" stroke="#4d86e6" stroke-width="1"/><ellipse cx="${X(126.55)}" cy="${Y(33.38)}" rx="19" ry="9" fill="url(#kg)" stroke="#4d86e6"/>
- <text x="${X(126.98)-22}" y="${Y(37.57)+12}" fill="#cfe0ff" font-size="9">서울</text><text x="${X(129.07)+5}" y="${Y(35.18)+10}" fill="#cfe0ff" font-size="9">부산</text>${pins}</svg>`;
+ const pins=rows.slice().sort((a,b)=>({위험:2,주의:1,양호:0}[a.status]-{위험:2,주의:1,양호:0}[b.status])).map(r=>{const c=REGIONS[r.st.region]||REGIONS['서울'];const key=r.st.region;const k=used[key]=(used[key]||0)+1;
+  const x=X(c[0])+(k-1)*6,y=Y(c[1])-(k-1)*4;const col=r.status==='위험'?'#e5383b':r.status==='주의'?'#f0a800':'#16b364';
+  return `<g class="pin" transform="translate(${x.toFixed(1)},${y.toFixed(1)})" onclick="showSite('${r.st.id}')"><title>${esc(r.st.name)} · ${r.status}</title>${r.status==='위험'?`<circle r="6" fill="none" stroke="${col}" stroke-width="2" class="pulse"/>`:''}<circle r="9" fill="${col}" opacity=".18"/><circle r="5" fill="${col}" stroke="#fff" stroke-width="2"/></g>`}).join('');
+ const lb=(t,x,y)=>`<text x="${x}" y="${y}" class="mlb">${t}</text>`;
+ return `<svg viewBox="0 0 215 330"><defs><linearGradient id="kg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#cfe2f8"/><stop offset="1" stop-color="#a3c5ee"/></linearGradient>
+ <pattern id="kdot" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="#5b8fd4" opacity=".22"/></pattern>
+ <filter id="ksh" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#2b6cc4" flood-opacity=".18"/></filter></defs>
+ <g filter="url(#ksh)"><path d="${d}" fill="url(#kg)" stroke="#5a8fd6" stroke-width="1.3" stroke-linejoin="round"/><path d="${d}" fill="url(#kdot)"/>
+ <ellipse cx="${X(126.55)}" cy="${Y(33.38)}" rx="17" ry="7.5" fill="url(#kg)" stroke="#5a8fd6" stroke-width="1.3"/></g>
+ ${lb('서울',(X(126.98)-26).toFixed(0),(Y(37.57)+3).toFixed(0))}${lb('부산',(X(129.07)+6).toFixed(0),(Y(35.18)+12).toFixed(0))}${lb('제주',(X(126.55)+20).toFixed(0),(Y(33.38)+4).toFixed(0))}${pins}</svg>`;
 }
 function donut(data){
  const tot=sum(data,d=>d.v),R=60,C=2*Math.PI*R;let off=0;
- const segs=tot?data.filter(d=>d.v).map(d=>{const len=d.v/tot*C;const g=`<circle r="${R}" cx="80" cy="80" fill="none" stroke="${d.c}" stroke-width="28" stroke-dasharray="${Math.max(0,len-1.5)} ${C-len+1.5}" stroke-dashoffset="${-off}" transform="rotate(-90 80 80)"/>`;off+=len;return g}).join(''):`<circle r="${R}" cx="80" cy="80" fill="none" stroke="#1f3d70" stroke-width="28"/>`;
- return `<svg viewBox="0 0 160 160" width="175" height="175">${segs}<circle r="44" cx="80" cy="80" fill="#0c1f48"/><text x="80" y="74" text-anchor="middle" fill="#cfe0ff" font-size="15">총</text><text x="80" y="100" text-anchor="middle" fill="#fff" font-size="24" font-weight="800">${tot}건</text></svg>`;
+ const segs=tot?data.filter(d=>d.v).map(d=>{const len=d.v/tot*C;const g=`<circle r="${R}" cx="80" cy="80" fill="none" stroke="${d.c}" stroke-width="28" stroke-dasharray="${Math.max(0,len-1.5)} ${C-len+1.5}" stroke-dashoffset="${-off}" transform="rotate(-90 80 80)"/>`;off+=len;return g}).join(''):`<circle r="${R}" cx="80" cy="80" fill="none" stroke="#e3e5e8" stroke-width="28"/>`;
+ return `<svg viewBox="0 0 160 160" width="175" height="175">${segs}<circle r="44" cx="80" cy="80" fill="#fff"/><text x="80" y="74" text-anchor="middle" fill="#556" font-size="15">총</text><text x="80" y="100" text-anchor="middle" fill="#222" font-size="24" font-weight="800">${tot}건</text></svg>`;
 }
 function pgOverview(){
  const T=today(),sites=visSites(),rows=sites.map(siteStats);
@@ -534,19 +749,20 @@ function pgOverview(){
  const eduAvg=tgt?Math.round(att/tgt*100):0;
  const bcCnt=sum(DB.broadcasts.filter(b=>siteOk(b.siteId)&&inRange(b.date)),b=>b.count||1);
  const recent=inP.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
- const kpi=(ic,bg,lb,v,unit,s,col,pg)=>`<div class="panel kpi" onclick="go('${pg}')"><div class="ic" style="${bg==='W'?'background:#ffffff10;border:2px solid #ffffffb3;color:#fff':'background:'+bg}">${KICON[ic]||ic}</div><div><div class="lb">${lb}</div><div class="v" style="color:${col}">${v}<small>${unit}</small></div><div class="s">${s}</div></div></div>`;
+ const KC={perf:'k-green',history:'k-green',open:open.length?'k-red':'k-gray',accidents:nSan?'k-red':(nGong?'k-org':'k-gray')};
+ const kpi=(ic,bg,lb,v,unit,s,col,pg)=>`<div class="panel kpi ${KC[pg]||''}" onclick="go('${pg}')"><div class="ic" style="${bg==='W'?'background:#eafaf1;border:2px solid #03c75a;color:#03a94f':'background:'+bg}">${KICON[ic]||ic}</div><div><div class="lb">${lb}</div><div class="v" style="color:${col}">${v}<small>${unit}</small></div><div class="s">${s}</div></div></div>`;
  const lvl=h=>{const d=diffDays(h.due||T,T);return d<=1?['긴급','#dc2626']:d<=3?['주의','#ea8a06']:['알림','#4f6bd0']};
  return `<div class="dash"><div style="min-width:0">
  <div class="kpis">
-  ${kpi('site','W','관리 현장',sites.length,'개',`전체 ${DB.sites.length}개 현장 중 ${sites.length}개 표시`,'#fff','perf')}
+  ${kpi('site','W','관리 현장',sites.length,'개',`전체 ${DB.sites.length}개 현장 중 ${sites.length}개 표시`,'#222','perf')}
   ${kpi('⚠️','#dc3540','미조치 위험요인',open.length,'건',overdue.length?`<span style="color:#dc3540;font-weight:800">기한초과 ${overdue.length}건</span>`:'기한초과 없음','#dc3540','open')}
-  ${kpi('check','W','개선조치 완료율',doneRate,'%',`기간 내 ${inP.length}건 중 ${done}건 완료`,'#3ee08a','history')}
-  ${kpi('cross','W','산재 / 공상',`${nSan}<span style="font-size:26px;color:#8ea6cf;margin:0 4px">/</span><span style="color:${nGong?'#ffb547':'#fff'}">${nGong}</span>`,'건',`기간 내 발생 · 아차사고 ${nNear}건`,nSan?'#dc3540':'#fff','accidents')}
+  ${kpi('check','W','개선조치 완료율',doneRate,'%',`기간 내 ${inP.length}건 중 ${done}건 완료`,'#03a94f','history')}
+  ${kpi('cross','W','산재 / 공상',`${nSan}<span style="font-size:26px;color:#bbb;margin:0 4px">/</span><span style="color:${nGong?'#e08a00':'#222'}">${nGong}</span>`,'건',`기간 내 발생 · 아차사고 ${nNear}건`,nSan?'#dc3540':'#222','accidents')}
  </div>
  <div class="row2">
   <div class="panel"><h3><span>현장별 안전현황${state.site!=='all'?` <button class="btn primary sm" style="margin-left:8px" onclick="state.site='all';render()">↩ 전체 현장</button>`:''}</span> <span class="legend"><span><i style="background:#22c55e"></i>양호 ${cnt.good}</span><span><i style="background:#f5b40b"></i>주의 ${cnt.warn}</span><span><i style="background:#ef4444"></i>위험 ${cnt.bad}</span></span></h3>
    <div class="sitebox"><div class="map" ${state.site!=='all'?`onclick="if(event.target.closest('.pin'))return;state.site='all';render()" title="지도를 누르면 전체 현장으로" style="cursor:pointer"`:''}>${koreaMap(rows)}</div>
-   <div>${siteBars(rows)}</div></div></div>
+   <div>${siteBars(rows)}</div></div>${hrSection()}</div>
   <div class="stack">
    ${repeatPanel()}
    ${accPanel(rows,nSan,nGong,nNear)}
@@ -557,7 +773,7 @@ function pgOverview(){
   ${recent.map(h=>`<tr class="click" onclick="openForm('hazards','${h.id}')"><td>${h.date}</td><td>${esc(siteName(h.siteId))}</td><td>${esc(h.type)}</td><td>${badge(h.status)}</td><td>${h.due||'-'}</td><td>${h.photo||h.photoAfter?`<img class="thumb" src="${h.photoAfter||h.photo}" onclick="event.stopPropagation();viewImg(this.src)">`:'<button class="btn sm ed" onclick="event.stopPropagation();openForm(\'hazards\',\''+h.id+'\')">등록</button>'}</td></tr>`).join('')||'<tr><td colspan=6 class="empty">기간 내 위험요인 없음</td></tr>'}
   </tbody></table></div></div>
   <div class="panel"><h3>대표이사 지시사항 이행 현황 <span class="lnk" onclick="go('directives')">전체보기 ›</span></h3><div class="tw"><table class="t"><thead><tr><th>지시내용</th><th>담당부서</th><th>이행률</th><th>현황</th></tr></thead><tbody>
-  ${DB.directives.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).map(d=>`<tr class="click" onclick="openForm('directives','${d.id}')"><td>${esc(d.text)}</td><td>${esc(d.dept)}</td><td style="color:#7fb0ff;font-weight:700">${+d.progress||0}%</td><td>${badge((+d.progress||0)>=100?'완료':'진행중')}</td></tr>`).join('')||'<tr><td colspan=4 class="empty">지시사항 없음</td></tr>'}
+  ${DB.directives.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).map(d=>`<tr class="click" onclick="openForm('directives','${d.id}')"><td>${esc(d.text)}</td><td>${esc(d.dept)}</td><td style="color:#1a6ed8;font-weight:700">${+d.progress||0}%</td><td>${badge((+d.progress||0)>=100?'완료':'진행중')}</td></tr>`).join('')||'<tr><td colspan=4 class="empty">지시사항 없음</td></tr>'}
   </tbody></table></div></div>
  </div></div>
  <div class="dside">
@@ -573,7 +789,7 @@ function pgOverview(){
   <div class="panel"><h3>최근 공지사항 <span class="lnk" onclick="go('settings')">더보기 ›</span></h3><ul class="notice">
   ${DB.notices.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).map(n=>`<li onclick="openForm('notices','${n.id}')"><span>${esc(n.title)}</span><em>${n.date.slice(5).replace('-','.')}</em></li>`).join('')||'<li><span class="mut">공지 없음</span></li>'}</ul></div>
   <div class="slogan"><b>안전은<br>선택이 아닌 필수입니다.</b><p>당신의 작은 관심이<br>큰 사고를 막을 수 있습니다.</p>
-  <svg width="170" height="120" viewBox="0 0 170 120"><g fill="#0a1530"><rect x="10" y="60" width="18" height="60"/><rect x="32" y="40" width="22" height="80"/><rect x="58" y="70" width="16" height="50"/><rect x="78" y="30" width="26" height="90"/><rect x="108" y="55" width="20" height="65"/><rect x="132" y="45" width="24" height="75"/></g><g stroke="#ffb547" stroke-width="2" fill="none"><path d="M120 10v45M90 12h70M120 12l-30 8"/><path d="M150 12v10"/></g></svg></div>
+  <svg width="170" height="120" viewBox="0 0 170 120"><g fill="#cdebd9"><rect x="10" y="60" width="18" height="60"/><rect x="32" y="40" width="22" height="80"/><rect x="58" y="70" width="16" height="50"/><rect x="78" y="30" width="26" height="90"/><rect x="108" y="55" width="20" height="65"/><rect x="132" y="45" width="24" height="75"/></g><g stroke="#9fd6b6" stroke-width="2" fill="none"><path d="M120 10v45M90 12h70M120 12l-30 8"/><path d="M150 12v10"/></g></svg></div>
  </div></div>`;
 }
 
@@ -585,14 +801,14 @@ function accBars(rows){
 function accPanel(rows,nSan,nGong,nNear){
  const free=rows.filter(r=>!r.sanjae&&!r.gongsang).length;
  return `<div class="panel"><h3>산재·공상 현황 <span class="lnk" onclick="go('accidents')">전체보기 ›</span></h3>
- <div class="achips"><div style="border-color:#dc3540"><b style="color:#dc3540">${nSan}</b><span>산재</span></div><div style="border-color:#d98a06"><b class="org">${nGong}</b><span>공상</span></div><div style="border-color:#3a5687"><b style="color:#fff">${nNear}</b><span>아차사고</span></div><div style="border-color:#3a5687"><b style="color:#fff">${free}</b><span>무재해 현장</span></div></div>
+ <div class="achips"><div style="border-color:#dc3540"><b style="color:#dc3540">${nSan}</b><span>산재</span></div><div style="border-color:#d98a06"><b class="org">${nGong}</b><span>공상</span></div><div style="border-color:#e3e5e8"><b style="color:#222">${nNear}</b><span>아차사고</span></div><div style="border-color:#e3e5e8"><b style="color:#222">${free}</b><span>무재해 현장</span></div></div>
  <div class="legend" style="margin:2px 0 6px"><span><i style="background:#dc3540"></i>산재</span><span><i style="background:#f59e0b"></i>공상</span><span><i style="background:#3b82f6"></i>아차사고</span></div>
  <div>${accBars(rows)||'<div class="mut" style="padding:14px 0;text-align:center">기간 내 산재·공상·아차사고 없음 — 전 현장 무재해 👍</div>'}</div></div>`;
 }
 function pgAccidents(){
  const rows=visSites().map(siteStats);const accP=(DB.accidents||[]).filter(a=>siteOk(a.siteId)&&inRange(a.date));
  const c=k=>accP.filter(a=>a.kind===k).length;const lost=sum(accP.filter(a=>a.kind!=='아차사고'),a=>a.lostDays);
- return `<div class="sumrow"><div class="panel"><b class="red">${c('산재')}</b><span>산재 (건)</span></div><div class="panel"><b class="org">${c('공상')}</b><span>공상 (건)</span></div><div class="panel"><b style="color:#7fb0ff">${c('아차사고')}</b><span>아차사고 (건)</span></div><div class="panel"><b>${lost}</b><span>휴업·요양 일수 합계</span></div><div class="panel"><b class="org">${accP.filter(a=>a.kind!=='아차사고'&&a.status!=='조치완료').length}</b><span>처리 중 (조사·대책)</span></div></div>
+ return `<div class="sumrow"><div class="panel"><b class="red">${c('산재')}</b><span>산재 (건)</span></div><div class="panel"><b class="org">${c('공상')}</b><span>공상 (건)</span></div><div class="panel"><b style="color:#1a6ed8">${c('아차사고')}</b><span>아차사고 (건)</span></div><div class="panel"><b>${lost}</b><span>휴업·요양 일수 합계</span></div><div class="panel"><b class="org">${accP.filter(a=>a.kind!=='아차사고'&&a.status!=='조치완료').length}</b><span>처리 중 (조사·대책)</span></div></div>
  <div class="panel" style="margin-bottom:14px"><h3>현장별 산재·공상·아차사고 <span class="legend"><span><i style="background:#dc3540"></i>산재</span><span><i style="background:#f59e0b"></i>공상</span><span><i style="background:#3b82f6"></i>아차사고</span></span></h3>${accBars(rows)||'<div class="mut" style="padding:14px 0;text-align:center">기간 내 발생 없음 👍</div>'}</div>
  ${listPage('accidents',{title:'산재·공상·아차사고 기록'})}`;
 }
@@ -613,17 +829,59 @@ function vwStats(st){
   o={manual:m.date,el:+m.el||0,bp:+m.bp||0,dm:+m.dm||0,hr:(m.hr===''||m.hr==null)?null:+m.hr,work:+m.work||0,absent:+m.absent||0,quit:+m.quit||0};o.total=o.el+o.bp+o.dm;}
  const th=vwTh();o.st=st;o.sig=o.hr==null?'':o.hr>th?'red':o.hr>=Math.ceil(th*.8)?'amber':'green';return o;
 }
+const HRI={
+ '거푸집·동바리':'<path d="M3 6h18v3H3z"/><path d="M6 9v11M12 9v11M18 9v11M4 20h4M10 20h4M16 20h4M6 14h12"/>',
+ '철근 조립':'<path d="M7 3v18M12 3v18M17 3v18M3 7h18M3 12h18M3 17h18"/>',
+ '콘크리트 타설':'<path d="M2 17h11V9h4l4 4v4h-2"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M4 9l3-4h4l2 4z"/>',
+ '양중(크레인)':'<path d="M8 21V4M5 21h6M8 4l-4 3M8 4h13M8 8l4-4M17 4v6"/><rect x="15" y="10" width="4" height="3"/><path d="M8 12h0M8 16h0"/>',
+ '갱폼·알폼':'<rect x="4" y="9" width="7" height="12"/><rect x="13" y="9" width="7" height="12"/><path d="M12 2v4M9 6h6M7.5 9V6.5M16.5 9V6.5"/>',
+ '고소·비계':'<path d="M5 3v18M19 3v18M5 7h14M5 14h14M5 7l14 7M19 7L5 14M5 21h14"/>',
+ '화기(용접·용단)':'<path d="M12 3c2 4 5 5 5 10a5 5 0 0 1-10 0c0-3 2-4 2-6 1 1 2 2 2 3 1-2 1-4 1-7z"/>',
+ '개구부·단부':'<path d="M3 14h6M15 14h6M9 14v3h6v-3"/><path d="M3 8h18M3 8v6M21 8v6"/><circle cx="12" cy="4" r="1.5"/>'};
+const HRS={'거푸집·동바리':'거푸집·동바리','철근 조립':'철근조립','콘크리트 타설':'콘크리트타설','양중(크레인)':'양중·크레인','갱폼·알폼':'갱폼·알폼','고소·비계':'고소·비계','화기(용접·용단)':'용접·용단','개구부·단부':'개구부·단부'};
+let HR_TYPE='';
+function hrToday(){return (DB.hrwork||[]).filter(w=>siteOk(w.siteId)&&w.date===state.to)}
+function hrSection(){
+ const L=hrToday();const c=k=>L.filter(w=>w.status===k).length;const bad=L.filter(w=>w.status==='작업중지'||(!isT(w.permit)&&w.status!=='작업완료')).length;
+ const ppl=sum(L.filter(w=>w.status==='작업중'),w=>w.workers);
+ return `<div class="hrsec"><h3 style="margin:14px 0 10px"><span>🏗️ 고위험작업 현황 <small class="mut" style="font-weight:500">${state.to===today()?'오늘':state.to} · 철근콘크리트 공사 기준</small></span><span class="lnk" onclick="HR_TYPE='';go('hrw')">전체보기 ›</span></h3>
+ <div class="hrbox"><div class="hrleft"><div class="mut" style="font-size:12px;margin-bottom:6px">작업분류 현황</div>
+  <div class="hrstat on" onclick="HR_TYPE='';go('hrw')"><span>전체 작업</span><b>${L.length}<small>건</small></b></div>
+  <div class="hrstat" onclick="HR_TYPE='';go('hrw')"><span>작업중 <em class="mut">(${ppl}명)</em></span><b style="color:#1a6ed8">${c('작업중')}<small>건</small></b></div>
+  <div class="hrstat ${bad?'hot':''}" onclick="HR_TYPE='';go('hrw')"><span>중지·허가 미확인</span><b style="color:${bad?'#ff5a64':'#222'}">${bad}<small>건</small></b></div></div>
+  <div class="hrright"><div class="mut" style="font-size:12px;margin-bottom:6px">공종 현황</div><div class="hrgrid">
+  ${HRT.map(t=>{const n=L.filter(w=>w.type===t).length,on=L.filter(w=>w.type===t&&w.status==='작업중').length,warn=L.some(w=>w.type===t&&(w.status==='작업중지'||(!isT(w.permit)&&w.status!=='작업완료')));
+   return `<div class="hrt ${n?'has':''} ${warn?'warn':''}" onclick="HR_TYPE='${t}';go('hrw')" title="${t} · 작업중 ${on}건"><svg viewBox="0 0 24 24">${HRI[t]}</svg><span>${HRS[t]}</span><b>${n}<small>건</small></b></div>`}).join('')}
+  </div></div></div></div>`;
+}
+function pgHR(){
+ const all=(DB.hrwork||[]).filter(w=>siteOk(w.siteId)&&inRange(w.date));const L=HR_TYPE?all.filter(w=>w.type===HR_TYPE):all;
+ const c=k=>L.filter(w=>w.status===k).length;const bad=L.filter(w=>!isT(w.permit)&&w.status!=='작업완료').length;
+ const bySite=visSites().map(st=>({st,n:L.filter(w=>w.siteId===st.id).length,on:L.filter(w=>w.siteId===st.id&&w.status==='작업중').length})).filter(x=>x.n).sort((a,b)=>b.n-a.n);const mx=Math.max(1,...bySite.map(x=>x.n));
+ return `<div class="chips" style="margin-bottom:12px"><button class="chip ${HR_TYPE?'':'on'}" onclick="HR_TYPE='';render()">전체 공종</button>${HRT.map(t=>`<button class="chip ${HR_TYPE===t?'on':''}" onclick="HR_TYPE='${t}';render()">${t} ${all.filter(w=>w.type===t).length}</button>`).join('')}</div>
+ <div class="sumrow"><div class="panel"><b>${L.length}</b><span>기간 내 고위험작업</span></div><div class="panel"><b style="color:#1a6ed8">${c('작업중')}</b><span>작업중</span></div><div class="panel"><b>${c('작업예정')}</b><span>작업예정</span></div><div class="panel"><b class="grn">${c('작업완료')}</b><span>작업완료</span></div><div class="panel"><b style="color:${c('작업중지')?'#ff5a64':'#222'}">${c('작업중지')}</b><span>작업중지</span></div><div class="panel"><b style="color:${bad?'#ff5a64':'#222'}">${bad}</b><span>작업허가서 미확인</span></div></div>
+ <div class="panel" style="margin-bottom:14px"><h3>현장별 고위험작업 ${HR_TYPE?'<small>'+esc(HR_TYPE)+'</small>':''}</h3>${bySite.map(x=>`<div class="bar" onclick="showSite('${x.st.id}')"><span>${esc(x.st.name)}</span><div class="tr"><div class="fl" style="width:${x.n/mx*100}%;background:#3b6fd8"></div></div><span class="pc">${x.n}건</span></div>`).join('')||'<div class="mut">기간 내 고위험작업 없음</div>'}</div>
+ ${listPage('hrwork',{title:(HR_TYPE?HR_TYPE+' ':'')+'고위험작업 목록',filter:HR_TYPE?w=>w.type===HR_TYPE:null,sort:(a,b)=>b.date.localeCompare(a.date)||({작업중:0,작업중지:1,작업예정:2,작업완료:3}[a.status]-{작업중:0,작업중지:1,작업예정:2,작업완료:3}[b.status])})}`;
+}
+function demoHR(){
+ const T=today();let s=5;const r=()=>(s=(s*9301+49297)%233280)/233280;const pk=a=>a[Math.floor(r()*a.length)];
+ const CO=['대한철콘','한빛건설(철콘)','성원산업','동아철근','우진폼텍'],LOC=['지하2층 B구역','지하1층 램프','3층 슬래브','7층 코어','12층 외벽','옥탑층','지상1층 기둥','5층 계단실'];
+ const ST=['작업중','작업중','작업중','작업예정','작업완료','작업중지'];const out=[];let n=0;
+ for(let d=-6;d<=0;d++){for(let i=1;i<=12;i++){const k=d===0?Math.floor(r()*4):Math.floor(r()*3);for(let j=0;j<k;j++){n++;const st=d<0?'작업완료':pk(ST);
+  out.push({id:'hr'+n,date:addDays(T,d),siteId:'s'+i,type:pk(HRT),status:st,company:pk(CO),location:pk(LOC),workers:3+Math.floor(r()*12),supervisor:pk(['김반장','이주임','박과장','최대리']),permit:st==="작업중지"?false:r()>.04,measures:'작업 전 TBM 실시, 안전시설 점검',photo:''})}}}
+ return out;
+}
 function siteBars(rows){
  if(!rows.length)return '<div class="empty">현장이 없습니다</div>';
  const rk={위험:0,주의:1,양호:2};const R=rows.slice().sort((a,b)=>rk[a.status]-rk[b.status]||b.open-a.open||b.overdue-a.overdue);
  const mx=Math.max(1,...R.map(r=>r.open));const col={위험:'#dc3540',주의:'#e0a020',양호:'#22a35a'};
- return `<div class="sbh"><span>현장</span><span style="grid-column:span 2;white-space:nowrap">미조치 위험요인</span><span>취약(고위험)</span></div>`+R.map(r=>`<div class="sbr" onclick="showSite('${r.st.id}')"><span class="sn"><i style="background:${col[r.status]}"></i>${esc(r.st.name)}</span>
+ return `<div class="sbh"><span>현장</span><span style="grid-column:span 2;white-space:nowrap">미조치 위험요인</span><span>취약(고위험)</span></div>`+R.map(r=>`<div class="sbr${r.status==='위험'?' hot':''}" onclick="showSite('${r.st.id}')"><span class="sn"><i style="background:${col[r.status]}"></i>${esc(r.st.name)}</span>
  <div class="at">${r.open?`<i style="width:${(r.open/mx*100).toFixed(1)}%;background:${col[r.status]}"></i>`:''}</div>
  <span class="sc">${r.open?`<b>${r.open}건</b>${r.overdue?` <b class="red">(${r.overdue})</b>`:''}`:'<span class="grn" style="font-size:12px">없음</span>'}</span>
  <span class="sv">${vwCell(r.st)}</span></div>`).join('')+`<div class="mut" style="font-size:11px;margin-top:6px">(빨간 숫자) 기한초과 · 위험한 현장부터 정렬</div>`+(state.site!=='all'?`<button class="btn primary" style="width:100%;margin-top:14px;padding:12px" onclick="state.site='all';render()">↩ 전체 현장 현황으로 돌아가기 (${DB.sites.length}개 현장)</button>`:'');
 }
 function vwCell(st){const o=vwStats(st);if(o.none)return '<span class="mut">-</span>';
- const c=o.sig==='red'?'#ff5a64':o.sig==='amber'?'#fbbf24':'#c9d7f0';
+ const c=o.sig==='red'?'#ff5a64':o.sig==='amber'?'#e08a00':'#555';
  return `<span style="cursor:pointer" onclick="event.stopPropagation();state.site='${st.id}';go('vw')">${o.total}명${o.hr!=null?` <b style="color:${c}">(${o.hr})</b>`:''}</span>`}
 function vwAlertHtml(){
  const reds=visSites().map(vwStats).filter(o=>o.sig==='red');
@@ -665,12 +923,12 @@ function pgVW(){
  <div class="toolbar"><span class="mut">고위험군 경보 기준</span><input type="number" min="1" value="${th}" style="width:70px" onchange="DB.settings.vwTh=Math.max(1,+this.value||10);save();render()" ${canEdit()?'':'disabled'}><span class="mut">명 초과</span>
  <label class="ckb" style="padding:6px 10px"><input type="checkbox" ${DB.settings.vwMask?'checked':''} onchange="DB.settings.vwMask=this.checked;save();render()"> 이름 가리기</label><span class="sp"></span>
  <button class="btn" onclick="copyText(vwReport())">📤 요약 복사 (카톡용)</button><button class="btn ed" onclick="vwImport()">📥 취약근로자 프로그램 자료 가져오기</button></div>
- <div class="sumrow"><div class="panel"><b>${A('total')}</b><span>취약근로자 총원</span></div><div class="panel"><b style="color:#7fb0ff">${A('work')}</b><span>현재 출역</span></div><div class="panel"><b>${A('absent')+A('quit')}</b><span>미출역 + 퇴사</span></div><div class="panel"><b style="color:${A('hr')?'#dc3540':'#fff'}">${A('hr')}</b><span>고위험군</span></div><div class="panel"><b style="color:${reds.length?'#dc3540':'#fff'}">${reds.length}</b><span>기준 초과 현장</span></div></div>
+ <div class="sumrow"><div class="panel"><b>${A('total')}</b><span>취약근로자 총원</span></div><div class="panel"><b style="color:#1a6ed8">${A('work')}</b><span>현재 출역</span></div><div class="panel"><b>${A('absent')+A('quit')}</b><span>미출역 + 퇴사</span></div><div class="panel"><b style="color:${A('hr')?'#dc3540':'#222'}">${A('hr')}</b><span>고위험군</span></div><div class="panel"><b style="color:${reds.length?'#dc3540':'#222'}">${reds.length}</b><span>기준 초과 현장</span></div></div>
  <div class="grid2" style="margin-bottom:14px"><div class="panel"><h3>근무상태</h3><div class="stk">${seg(A('work'),'#3b6fd8','출역')}${seg(A('absent'),'#d98a06','미출역')}${seg(A('quit'),'#64748b','퇴사')}</div>
   <div class="legend"><span><i style="background:#3b6fd8"></i>출역 ${A('work')}</span><span><i style="background:#d98a06"></i>미출역 ${A('absent')}</span><span><i style="background:#64748b"></i>퇴사 ${A('quit')}</span></div></div>
   <div class="panel"><h3>건강 취약유형 <small>퇴사자 제외</small></h3>${hb('고령(65+)',A('el'),'#8b7cf0')}${hb('고혈압',A('bp'),'#e0607e')}${hb('당뇨',A('dm'),'#d4a017')}${hb('고위험군',A('hr'),'#dc3540')}</div></div>
  <div class="panel" style="margin-bottom:14px"><h3>현장별 요약 · 신호등 <small>고위험군 기준 ${th}명 초과 빨강 · 80% 이상 노랑 · 미입력 회색</small></h3><div class="tw"><table class="t"><thead><tr><th></th><th>현장</th><th>자료</th><th class="num">총원</th><th class="num">출역</th><th class="num">미출역</th><th class="num">퇴사</th><th class="num">고령</th><th class="num">고혈압</th><th class="num">당뇨</th><th class="num">고위험</th></tr></thead><tbody>
- ${L.map(o=>`<tr class="click" onclick="${o.reg?`state.site='${o.st.id}';render()`:`openForm('vsum',null,{siteId:'${o.st.id}'})`}"><td><span class="lamp ${o.sig}"></span></td><td><b>${esc(o.st.name)}</b></td><td class="mut">${o.reg?'명부 '+o.reg+'명':o.manual?'집계 '+o.manual:'미입력'}</td>${o.none?'<td class="num mut" colspan="8">-</td>':`<td class="num">${o.total}</td><td class="num">${o.work}</td><td class="num">${o.absent}</td><td class="num">${o.quit}</td><td class="num">${o.el}</td><td class="num">${o.bp}</td><td class="num">${o.dm}</td><td class="num" style="font-weight:800;color:${o.sig==='red'?'#dc3540':o.sig==='amber'?'#fbbf24':'#fff'}">${o.hr==null?'-':o.hr}</td>`}</tr>`).join('')}
+ ${L.map(o=>`<tr class="click" onclick="${o.reg?`state.site='${o.st.id}';render()`:`openForm('vsum',null,{siteId:'${o.st.id}'})`}"><td><span class="lamp ${o.sig}"></span></td><td><b>${esc(o.st.name)}</b></td><td class="mut">${o.reg?'명부 '+o.reg+'명':o.manual?'집계 '+o.manual:'미입력'}</td>${o.none?'<td class="num mut" colspan="8">-</td>':`<td class="num">${o.total}</td><td class="num">${o.work}</td><td class="num">${o.absent}</td><td class="num">${o.quit}</td><td class="num">${o.el}</td><td class="num">${o.bp}</td><td class="num">${o.dm}</td><td class="num" style="font-weight:800;color:${o.sig==='red'?'#dc3540':o.sig==='amber'?'#fbbf24':'#222'}">${o.hr==null?'-':o.hr}</td>`}</tr>`).join('')}
  </tbody><tfoot><tr style="font-weight:800"><td></td><td>합계</td><td></td><td class="num">${A('total')}</td><td class="num">${A('work')}</td><td class="num">${A('absent')}</td><td class="num">${A('quit')}</td><td class="num">${A('el')}</td><td class="num">${A('bp')}</td><td class="num">${A('dm')}</td><td class="num">${A('hr')}</td></tr></tfoot></table></div></div>
  ${tr.length?`<div class="panel" style="margin-bottom:14px"><h3>직종별 인원 <small>명부 기준</small></h3>${tr.map(x=>`<div class="bar"><span>${esc(x.t)}</span><div class="tr"><div class="fl" style="width:${x.n/tmx*100}%;background:#3b6fd8"></div></div><span class="pc">${x.n}명</span></div>`).join('')}</div>`:''}
  ${listPage('vworkers',{range:false,title:'취약근로자 명부',sort:(a,b)=>(isT(b.hr)-isT(a.hr))||siteName(a.siteId).localeCompare(siteName(b.siteId))||String(a.code||'').localeCompare(String(b.code||''),'ko',{numeric:true})})}
@@ -733,7 +991,7 @@ function showSite(id){
 function rowsOf(key,opt={}){
  const sc=SCHEMAS[key];let r=DB[key].slice();
  if(sc.fields.some(f=>f.k==='siteId'))r=r.filter(x=>siteOk(x.siteId));
- if(opt.range!==false&&['hazards','edu','broadcasts','inspections','accidents'].includes(key))r=r.filter(x=>inRange(x.date));
+ if(opt.range!==false&&['hazards','edu','broadcasts','inspections','accidents','hrwork'].includes(key))r=r.filter(x=>inRange(x.date));
  if(opt.filter)r=r.filter(opt.filter);
  return r.sort(opt.sort||((a,b)=>(b.date||b.name||'').localeCompare(a.date||a.name||'')));
 }
@@ -742,6 +1000,7 @@ function cell(f,r){
  if(f.k==='siteId')return esc(siteName(v));
  if(f.k==='_rate'){const p=r.target?Math.round(r.attended/r.target*100):null;return p==null?'-':`<span style="color:${rateColor(p)};font-weight:700">${p}%</span>`}
  if(f.k==='_health')return vtags(r);
+ if(f.k==='permit')return isT(v)?'<b class="grn">✓ 확인</b>':'<b class="red">미확인</b>';
  if(f.t==='check')return isT(v)?'<b class="red">✓</b>':'';
  if(f.k==='name'&&r.trade!==undefined&&DB.settings.vwMask)return esc(maskName(v));
  if(f.k==='_st')return badge((+r.progress||0)>=100?'완료':'진행중');
@@ -778,8 +1037,8 @@ function dl(text,name,type){const a=document.createElement('a');a.href=URL.creat
 function pgCompare(){
  const rows=visSites().map(siteStats).sort((a,b)=>({위험:0,주의:1,양호:2}[a.status]-{위험:0,주의:1,양호:2}[b.status])||b.open-a.open);
  const tot={found:sum(rows,r=>r.found),done:sum(rows,r=>r.done),open:sum(rows,r=>r.open),od:sum(rows,r=>r.overdue),tgt:sum(rows,r=>r.tgt),att:sum(rows,r=>r.att)};
- return `<div class="panel"><div class="rpt-head"><h2 style="margin:0">현장별 안전관리 비교 보고서</h2><p>기간: ${state.from} ~ ${state.to} · 작성: ${esc(whoAmI())} · 출력일 ${today()}</p></div>
- <h3>현장별 핵심 지표 비교 <span class="noprint"><button class="btn primary" onclick="window.print()">🖨 보고서 인쇄</button></span></h3>
+ return `<div class="panel">
+ <h3>현장별 핵심 지표 비교 <span class="noprint"><button class="btn primary" onclick="printPrep()">🖨 보고서 인쇄</button></span></h3>
  <div class="tw"><table class="t"><thead><tr><th>현장명</th><th>상태</th><th class="num">발견</th><th class="num">완료</th><th class="num">미조치</th><th class="num">기한초과</th><th class="num">개선 완료율</th><th class="num">교육 이행률</th><th class="num">미이수</th><th class="num">산재</th><th class="num">공상</th><th class="num">점검(평균)</th><th class="num">번역방송</th></tr></thead><tbody>
  ${rows.map(r=>`<tr class="click" onclick="showSite('${r.st.id}')"><td><b>${esc(r.st.name)}</b></td><td>${badge(r.status)}</td><td class="num">${r.found}</td><td class="num">${r.done}</td><td class="num ${r.open?'red':''}">${r.open}</td><td class="num ${r.overdue?'red':''}">${r.overdue}</td><td class="num">${r.doneRate}%</td><td class="num" style="color:${rateColor(r.rate)};font-weight:700">${r.rate==null?'-':r.rate+'%'}</td><td class="num">${r.miss}</td><td class="num ${r.sanjae?'red':''}">${r.sanjae}</td><td class="num ${r.gongsang?'org':''}">${r.gongsang}</td><td class="num">${r.insCnt}회${r.insAvg!=null?` (${r.insAvg}점)`:''}</td><td class="num">${r.bcCnt}회</td></tr>`).join('')}
  <tr style="font-weight:800"><td>합계</td><td></td><td class="num">${tot.found}</td><td class="num">${tot.done}</td><td class="num">${tot.open}</td><td class="num">${tot.od}</td><td class="num">${tot.found?Math.round(tot.done/tot.found*100):100}%</td><td class="num">${tot.tgt?Math.round(tot.att/tot.tgt*100):0}%</td><td class="num">${tot.tgt-tot.att}</td><td class="num">${sum(rows,r=>r.sanjae)}</td><td class="num">${sum(rows,r=>r.gongsang)}</td><td></td><td></td></tr>
@@ -801,7 +1060,7 @@ function repeatPanel(){
  const openR=rows.filter(a=>a.some(h=>h.status!=='완료')).length;const nSite=new Set(rows.map(a=>a[0].siteId)).size;
  const mx=Math.max(1,...rows.map(a=>a.length));
  return `<div class="panel"><h3>반복 부적합 현황 <span class="lnk" onclick="go('repeat')">전체보기 ›</span></h3>
- <div class="achips"><div style="border-color:#3a5687"><b style="color:#fff">${rows.length}</b><span>반복 항목</span></div><div style="border-color:${hot?'#dc3540':'#3a5687'}"><b style="color:${hot?'#ff6b6b':'#fff'}">${hot}</b><span>3회 이상</span></div><div style="border-color:#3a5687"><b style="color:#fff">${openR}</b><span>미조치 남음</span></div><div style="border-color:#3a5687"><b style="color:#fff">${nSite}</b><span>반복 현장</span></div></div>
+ <div class="achips"><div style="border-color:#e3e5e8"><b style="color:#222">${rows.length}</b><span>반복 항목</span></div><div style="border-color:${hot?'#dc3540':'#e3e5e8'}"><b style="color:${hot?'#ff6b6b':'#222'}">${hot}</b><span>3회 이상</span></div><div style="border-color:#e3e5e8"><b style="color:#222">${openR}</b><span>미조치 남음</span></div><div style="border-color:#e3e5e8"><b style="color:#222">${nSite}</b><span>반복 현장</span></div></div>
  <div id="rpBox">${repeatChart()}</div></div>`;
 }
 let RP_SITE='all';
@@ -816,11 +1075,11 @@ function repeatChart(){
  const W=360,pl=26,pr=8,pt=10,ph=110;
  const mx=Math.max(4,...P.map(p=>p.v));
  const step=(W-pl-pr)/Math.max(1,P.length-1),X=i=>pl+i*step,Y=v=>pt+ph-v/mx*ph;
- const first=P[0].v,last=P[P.length-1].v,chg=last-first,lc=chg>0?'#ff4d5a':chg<0?'#4d8dff':'#c9d7f0';
+ const first=P[0].v,last=P[P.length-1].v,chg=last-first,lc=chg>0?'#ff4d5a':chg<0?'#4d8dff':'#888';
  const line=P.map((p,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(p.v).toFixed(1)).join(' ');
  const area=line+` L${X(P.length-1).toFixed(1)} ${pt+ph} L${pl} ${pt+ph} Z`;
- const grid=[0,.5,1].map(f=>{const v=Math.round(mx*f),y=Y(v);return `<line x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}" stroke="#1f3d70" stroke-dasharray="${f?'3 4':''}"/><text x="${pl-6}" y="${y+4}" text-anchor="end" font-size="11" fill="#9fb3d6">${v}</text>`}).join('');
- const dl=`<text x="${pl}" y="${pt+ph+14}" font-size="10" fill="#7f95bd">${P[0].d.slice(5).replace('-','.')}</text><text x="${W-pr}" y="${pt+ph+14}" text-anchor="end" font-size="10" fill="#7f95bd">${P[P.length-1].d.slice(5).replace('-','.')}</text>`;
+ const grid=[0,.5,1].map(f=>{const v=Math.round(mx*f),y=Y(v);return `<line x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}" stroke="#e3e5e8" stroke-dasharray="${f?'3 4':''}"/><text x="${pl-6}" y="${y+4}" text-anchor="end" font-size="11" fill="#888">${v}</text>`}).join('');
+ const dl=`<text x="${pl}" y="${pt+ph+14}" font-size="10" fill="#999">${P[0].d.slice(5).replace('-','.')}</text><text x="${W-pr}" y="${pt+ph+14}" text-anchor="end" font-size="10" fill="#999">${P[P.length-1].d.slice(5).replace('-','.')}</text>`;
  const dots=P.map((p,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(p.v).toFixed(1)}" r="${i===P.length-1?4:6}" fill="${i===P.length-1?lc:'transparent'}" stroke="${i===P.length-1?'#fff':'none'}" stroke-width="1.5"><title>${p.d} 반복 항목 ${p.v}개</title></circle>`).join('');
  /* 현장별 막대 */
  const S=sites.map(st=>{const r=ALL.filter(h=>h.siteId===st.id&&h._rep);return {st,n:r.length,op:r.filter(h=>h.status!=='완료').length}}).filter(x=>x.n).sort((a,b)=>b.n-a.n||b.op-a.op);
@@ -831,15 +1090,15 @@ function repeatChart(){
   <rect x="${cx-slot/2}" y="${bt-14}" width="${slot}" height="${bh+34}" fill="transparent"/>
   <rect x="${(cx-bw/2).toFixed(1)}" y="${(bt+bh-hh).toFixed(1)}" width="${bw.toFixed(1)}" height="${(hh-ho).toFixed(1)}" fill="#4d8dff"/>
   <rect x="${(cx-bw/2).toFixed(1)}" y="${(bt+bh-ho).toFixed(1)}" width="${bw.toFixed(1)}" height="${ho.toFixed(1)}" fill="#ff4d5a"/>
-  ${sel?`<rect x="${(cx-bw/2-2).toFixed(1)}" y="${(bt+bh-hh-2).toFixed(1)}" width="${(bw+4).toFixed(1)}" height="${(hh+2).toFixed(1)}" fill="none" stroke="#fff" stroke-width="1.5"/>`:''}
-  <text x="${cx.toFixed(1)}" y="${(bt+bh-hh-4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">${x.n}</text>
-  <text x="${cx.toFixed(1)}" y="${lb}" text-anchor="middle" font-size="${S.length>6?10:11}" fill="${sel?'#fff':'#c9d7f0'}" font-weight="${sel?800:500}">${esc(x.st.name.replace('현장',''))}</text></g>`}).join('');
+  ${sel?`<rect x="${(cx-bw/2-2).toFixed(1)}" y="${(bt+bh-hh-2).toFixed(1)}" width="${(bw+4).toFixed(1)}" height="${(hh+2).toFixed(1)}" fill="none" stroke="#222" stroke-width="1.5"/>`:''}
+  <text x="${cx.toFixed(1)}" y="${(bt+bh-hh-4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="#222">${x.n}</text>
+  <text x="${cx.toFixed(1)}" y="${lb}" text-anchor="middle" font-size="${S.length>6?10:11}" fill="${sel?'#000':'#666'}" font-weight="${sel?800:500}">${esc(x.st.name.replace('현장',''))}</text></g>`}).join('');
  return `<div class="sk-head"><div><div class="mut" style="font-size:12px">${RP_SITE==='all'?'전체 현장':esc(siteName(RP_SITE))} · 반복 부적합 항목 추이</div>
  <div class="sk-now"><b style="color:${lc}">${last}</b><small>개</small><span style="color:${lc}">${chg>0?'▲':chg<0?'▼':'―'} ${Math.abs(chg)}개</span>${RP_SITE!=='all'?`<button class="chip" onclick="event.stopPropagation();RP_SITE='all';$('#rpBox').innerHTML=repeatChart()">전체 보기</button>`:''}</div></div>
  <div class="sk-leg"><span><i style="background:#ff4d5a"></i>미조치</span><span><i style="background:#4d8dff"></i>조치 완료</span></div></div>
  <svg viewBox="0 0 ${W} ${BH}" class="sk-svg"><defs><linearGradient id="rpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${lc}" stop-opacity=".45"/><stop offset="1" stop-color="${lc}" stop-opacity="0"/></linearGradient></defs>
  ${grid}<path d="${area}" fill="url(#rpg)"/><path d="${line}" fill="none" stroke="${lc}" stroke-width="2.2" stroke-linejoin="round"/>${dots}${dl}
- <line x1="${pl}" x2="${W-pr}" y1="${bt+bh}" y2="${bt+bh}" stroke="#2a4f90"/>${bars||`<text x="${W/2}" y="${bt+bh/2}" text-anchor="middle" font-size="12" fill="#9fb3d6">기간 내 반복 부적합 없음</text>`}</svg>
+ <line x1="${pl}" x2="${W-pr}" y1="${bt+bh}" y2="${bt+bh}" stroke="#2a4f90"/>${bars||`<text x="${W/2}" y="${bt+bh/2}" text-anchor="middle" font-size="12" fill="#888">기간 내 반복 부적합 없음</text>`}</svg>
  <div class="mut" style="font-size:11px">막대를 누르면 그 현장 추이만 보기</div>`;
 }
 function pgRepeat(){
@@ -909,14 +1168,14 @@ function pgSettings(){
  <div class="fld"><span>플랫폼(회사) 이름</span><input value="${esc(DB.settings.company)}" ${PRESET_COMPANY||(online()&&!isAdmin())?'readonly title="관리자만 바꿀 수 있습니다"':''} onchange="DB.settings.company=this.value;save();render()"></div>
  ${on?'':`<div class="fld"><span>보는 사람(직책)</span><select onchange="setRole(this.value)">${['대표이사','안전팀장','안전관리자'].map(o=>`<option ${o===DB.settings.role?'selected':''}>${o}</option>`).join('')}</select></div>`}</div></div>
  <div class="panel adm"><h3>데이터 관리 <small>관리자 전용</small></h3><div class="toolbar"><button class="btn primary" onclick="backup()">💾 백업 파일 받기</button><label class="btn ed">📂 백업 불러오기<input type="file" accept=".json" hidden onchange="restore(this)"></label>
- <button class="btn ed" onclick="if(confirm('예시 데이터로 다시 채울까요? 현재 데이터는 사라집니다.${on?'\\n(서버 자료도 바뀌어 모든 관리자 화면에 반영됩니다)':''}')){const s=DB.settings;DB=demo();DB.settings=s;replaceAll()}">예시 데이터</button><button class="btn danger ed" onclick="if(confirm('모든 기록을 지울까요? (현장 목록은 유지)${on?'\\n(서버 자료도 지워집니다)':''}')){['hazards','edu','broadcasts','inspections','directives','notices','accidents','vworkers','vsum'].forEach(k=>DB[k]=[]);replaceAll()}">전체 기록 비우기</button></div>
+ <button class="btn ed" onclick="if(confirm('예시 데이터로 다시 채울까요? 현재 데이터는 사라집니다.${on?'\\n(서버 자료도 바뀌어 모든 관리자 화면에 반영됩니다)':''}')){const s=DB.settings;DB=demo();DB.settings=s;replaceAll()}">예시 데이터</button><button class="btn danger ed" onclick="if(confirm('모든 기록을 지울까요? (현장 목록은 유지)${on?'\\n(서버 자료도 지워집니다)':''}')){['hazards','edu','broadcasts','inspections','directives','notices','accidents','vworkers','vsum','hrwork'].forEach(k=>DB[k]=[]);replaceAll()}">전체 기록 비우기</button></div>
  <div class="note">${on?'서버 연동 중에는 자료가 구글 시트에 저장됩니다. 백업 파일은 보관용입니다.':'데이터는 이 기기의 브라우저에 자동 저장됩니다. 다른 PC·휴대폰으로 옮기거나 보관하려면 백업 파일을 받아 두세요.'}</div></div></div>
  ${listPage('sites',{range:false,title:'현장 목록',sort:(a,b)=>a.name.localeCompare(b.name)})}${listPage('notices',{range:false,title:'공지사항'})}`;
 }
 function setRole(v){DB.settings.role=v;save();render()}
 function backup(){dl(JSON.stringify(DB),`안전현황_대시보드_백업_${today()}.json`,'application/json')}
 function restore(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.sites)throw 0;DB=d;load2();replaceAll();alert('불러오기 완료')}catch(e){alert('올바른 백업 파일이 아닙니다.')}};r.readAsText(f)}
-function load2(){DB.settings=DB.settings||{role:'대표이사',company:'이재성플랫폼'};['hazards','edu','broadcasts','inspections','directives','notices','sites','accidents','vworkers','vsum'].forEach(k=>DB[k]=DB[k]||[]);syncVTR()}
+function load2(){DB.settings=DB.settings||{role:'대표이사',company:'이재성플랫폼'};['hazards','edu','broadcasts','inspections','directives','notices','sites','accidents','vworkers','vsum','hrwork'].forEach(k=>DB[k]=DB[k]||[]);syncVTR()}
 
 /* ===================== 모달 / 입력폼 ===================== */
 function openModal(title,body,btns=[]){
@@ -973,7 +1232,7 @@ function clearPhoto(k){tmpPhotos[k]='';const p=$('#pv_'+k);p.removeAttribute('sr
 
 /* ===================== 서버 연동 · 로그인 (구글 시트 + Apps Script) ===================== */
 const CFGK='hse_hq_server_cfg'+NS,TOKK='hse_hq_tok'+NS;
-const COLL_KEYS=['sites','hazards','edu','broadcasts','inspections','directives','notices','accidents','vworkers','vsum'];
+const COLL_KEYS=['sites','hazards','edu','broadcasts','inspections','directives','notices','accidents','vworkers','vsum','hrwork'];
 let CFG={url:'',token:'',id:'',name:'',title:'',role:'',keep:true,localOK:false},VER='',LOGIN_OPEN=false,FIRST_CONNECT=false,LOCALSNAP=null,PULLING=false,PENDING=0,HAS_ADMIN=true,AUTH_TAB='login',AUTH_MSG='';
 function loadCfg(){try{Object.assign(CFG,JSON.parse(localStorage.getItem(CFGK)||'{}'))}catch(e){}
  if(!CFG.token){try{CFG.token=sessionStorage.getItem(TOKK)||''}catch(e){}}
@@ -1145,7 +1404,7 @@ async function loadMembers(){
  const sel=(nm,v,o)=>`<select name="${nm}">${o.map(x=>`<option ${x===v?'selected':''}>${x}</option>`).join('')}</select>`;
  const L=MEMBERS.slice().sort((a,b)=>(a.status==='대기'?0:1)-(b.status==='대기'?0:1)||String(a.joined).localeCompare(String(b.joined)));
  box.innerHTML=`<div class="panel"><h3>회원 목록 <small>${MEMBERS.length}명${PENDING?` · <b class="red">승인 대기 ${PENDING}명</b>`:''}</small></h3><div class="tw"><table class="t mem"><thead><tr><th>아이디</th><th>이름</th><th>직책</th><th>연락처</th><th>권한</th><th>상태</th><th>가입일</th><th>최근 로그인</th><th></th></tr></thead><tbody>
- ${L.map(m=>`<tr data-id="${esc(m.id)}" ${m.status==='대기'?'style="background:#2a1f0a"':''}><td><b>${esc(m.id)}</b>${m.id===CFG.id?' <span class="mut">(나)</span>':''}</td><td>${esc(m.name)}</td><td><input name="title" value="${esc(m.title)}" style="width:110px"></td><td>${esc(m.phone)}</td>
+ ${L.map(m=>`<tr data-id="${esc(m.id)}" ${m.status==='대기'?'style="background:#fff6e0"':''}><td><b>${esc(m.id)}</b>${m.id===CFG.id?' <span class="mut">(나)</span>':''}</td><td>${esc(m.name)}</td><td><input name="title" value="${esc(m.title)}" style="width:110px"></td><td>${esc(m.phone)}</td>
  <td>${sel('role',m.role,['관리자','입력','열람'])}</td><td>${sel('status',m.status,['대기','승인','중지'])}</td><td class="mut">${esc(m.joined)}</td><td class="mut">${esc(m.last||'-')}</td>
  <td style="white-space:nowrap"><button class="btn sm primary" onclick="memSave(this)">${m.status==='대기'?'승인 저장':'저장'}</button> <button class="btn sm" onclick="memReset(this)">비번 초기화</button> ${m.id===CFG.id?'':`<button class="btn sm danger" onclick="memDel(this)">삭제</button>`}</td></tr>`).join('')}
  </tbody></table></div></div>`;
