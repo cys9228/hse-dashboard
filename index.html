@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko"><head>
+<html lang="ko">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
@@ -428,6 +429,9 @@ body.prep [contenteditable="true"]:focus{outline:2px solid #03c75a;background:#f
 .ramx td.on{outline:3px solid #111}
 @media (max-width:1300px){.gtiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:760px){.gtiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.raimp{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#f3fcf7;border:1.5px dashed #03c75a;border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.raimp b{display:block;font-size:15px;color:#0b3d22;margin-bottom:2px}.raimp span{font-size:13px;color:#4a5b52}.raimp span b{display:inline;font-size:13px}
 </style>
 </head>
 <body>
@@ -1029,11 +1033,12 @@ function pgRisk(){
  for(const f of [...RA_F].reverse()){mx+=`<tr><th>${f}</th>`+RA_S.map(sv=>{const n=all.filter(r=>r.freq==f&&r.sev==sv).length,gr=raGrade(f*sv),k=f+'x'+sv;
   return `<td class="${RA_CELL===k?'on':''}" style="background:${RAC[gr]}${n?'':'33'}" onclick="RA_CELL=RA_CELL==='${k}'?'':'${k}';render()" title="빈도${f}×강도${sv}=${f*sv} (${gr})">${n||''}</td>`}).join('')+'</tr>'}
  mx+='</table>';
- return `<div class="sumrow"><div class="panel"><b>${all.length}</b><span>평가 항목</span></div><div class="panel"><b style="color:#e5383b">${g('상')}</b><span>상 (12~20)</span></div><div class="panel"><b style="color:#e08a00">${g('중')}</b><span>중 (6~11)</span></div><div class="panel"><b class="grn">${g('하')}</b><span>하 (1~5)</span></div><div class="panel"><b style="color:${hiOpen?'#e5383b':'#222'}">${hiOpen}</b><span>상위험 대책 미완료</span></div><div class="panel"><b>${all.length?Math.round(done/all.length*100):0}%</b><span>대책 완료(효과확인)</span></div><div class="panel"><b>${doneSites.length}/${sites.length}</b><span>평가 실시 현장</span></div></div>
+ return `<div class="raimp ed"><div><b>📥 위험성평가 파일 불러오기</b><span>「위험성평가 자동작성(GS 양식)」에서 받은 <b>엑셀(.xlsx)·저장 JSON·CSV</b> 파일을 첨부하면 목록에 한 번에 등록됩니다.</span></div><button class="btn primary" onclick="raImport()">📎 파일 첨부해서 불러오기</button></div>
+ <div class="sumrow"><div class="panel"><b>${all.length}</b><span>평가 항목</span></div><div class="panel"><b style="color:#e5383b">${g('상')}</b><span>상 (12~20)</span></div><div class="panel"><b style="color:#e08a00">${g('중')}</b><span>중 (6~11)</span></div><div class="panel"><b class="grn">${g('하')}</b><span>하 (1~5)</span></div><div class="panel"><b style="color:${hiOpen?'#e5383b':'#222'}">${hiOpen}</b><span>상위험 대책 미완료</span></div><div class="panel"><b>${all.length?Math.round(done/all.length*100):0}%</b><span>대책 완료(효과확인)</span></div><div class="panel"><b>${doneSites.length}/${sites.length}</b><span>평가 실시 현장</span></div></div>
  <div class="grid2" style="margin-bottom:14px"><div class="panel"><h3>위험도 매트릭스 <small>칸을 누르면 해당 항목만</small></h3><div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">${mx}<div class="note" style="flex:1;min-width:180px">위험도 = 빈도(1~5) × 강도(1~4)<br><b style="color:#e5383b">상 12~20</b> 허용 불가 · 즉시 개선<br><b style="color:#e08a00">중 6~11</b> 조건부 허용 · 개선 계획<br><b style="color:#03a94f">하 1~5</b> 허용 · 현 상태 유지 관리${RA_CELL?`<br><br><button class="btn sm" onclick="RA_CELL='';render()">필터 해제</button>`:''}</div></div></div>
  <div class="panel"><h3>현장별 위험성평가 실시 현황</h3>${sites.map(st=>{const r=all.filter(x=>x.siteId===st.id),h=r.filter(x=>raGrade(raScore(x.freq,x.sev))==='상'&&x.status!=='완료(효과확인)').length;
   return `<div class="bar" onclick="state.site='${st.id}';render()"><span>${esc(st.name)}</span><div class="tr"><div class="fl" style="width:${Math.min(100,r.length*10)}%;background:${r.length?(h?'#e5383b':'#03c75a'):'#ccc'}"></div></div><span class="pc">${r.length?r.length+'건':'<b class="red">미실시</b>'}</span></div>`}).join('')}</div></div>
- ${listPage('risks',{title:'위험성평가 목록'+(RA_CELL?' (빈도×강도 '+RA_CELL.replace('x','×')+')':''),filter:RA_CELL?r=>r.freq+'x'+r.sev===RA_CELL:null,sort:(a,b)=>raScore(b.freq,b.sev)-raScore(a.freq,a.sev)||b.date.localeCompare(a.date)})}`;
+ ${listPage('risks',{tools:`<button class="btn ed imp" onclick="raImport()">📥 불러오기 (엑셀·JSON)</button>`,title:'위험성평가 목록'+(RA_CELL?' (빈도×강도 '+RA_CELL.replace('x','×')+')':''),filter:RA_CELL?r=>r.freq+'x'+r.sev===RA_CELL:null,sort:(a,b)=>raScore(b.freq,b.sev)-raScore(a.freq,a.sev)||b.date.localeCompare(a.date)})}`;
 }
 function curGoal(){const y=state.to.slice(0,4);const G=(DB.goals||[]).slice().sort((a,b)=>String(b.year).localeCompare(String(a.year)));return G.find(g=>String(g.year)===y)||G[0]||null}
 function kpiActual(){
@@ -1081,6 +1086,76 @@ function demoRA(){
  return out;
 }
 
+
+/* ===================== 위험성평가 파일 불러오기 (GS 양식 엑셀·JSON·CSV) ===================== */
+function loadLib(src,glob){return new Promise((ok,no)=>{if(window[glob])return ok(window[glob]);const s=document.createElement('script');s.src=src;s.onload=()=>window[glob]?ok(window[glob]):no(new Error('모듈 로드 실패'));s.onerror=()=>no(new Error('엑셀 모듈을 불러오지 못했습니다. 인터넷 연결을 확인하세요.'));document.head.appendChild(s)})}
+const RA_TYPEKW=[['추락',/추락|떨어짐|단부|개구부|비계|사다리|안전대|고소/],['철근 찔림',/찔림|철근 단부|돌출/],['거푸집 붕괴',/붕괴|동바리|거푸집|무너/],['양중작업',/양중|크레인|인양|줄걸이|타워|호이스트/],['낙하',/낙하|비래|떨어지는 물|자재 낙/],['끼임',/끼임|협착|말림|회전체|지게차/],['감전',/감전|전기|누전|분전반|전선/],['화재',/화재|용접|불티|화기|용단|폭발/]];
+const raType=t=>{t=String(t||'');for(const [k,re] of RA_TYPEKW)if(re.test(t))return k;return '기타'};
+function raDate(v){if(!v)return '';if(v instanceof Date&&!isNaN(v))return v.toISOString().slice(0,10);if(typeof v==='object'&&v.result)v=v.result;const m=String(v).match(/(\d{4})[-.\/년\s]*(\d{1,2})[-.\/월\s]*(\d{1,2})/);return m?m[1]+'-'+pad(+m[2])+'-'+pad(+m[3]):''}
+function cellT(v){if(v==null)return '';if(v instanceof Date)return raDate(v);if(typeof v==='object'){if(v.richText)return v.richText.map(x=>x.text).join('');if(v.text)return String(v.text);if(v.result!=null)return String(v.result)}return String(v).trim()}
+function raGradeFS(g){g=String(g||'').trim();if(/^(고|상|high|높|1)/i.test(g))return ['4','4'];if(/^(저|하|low|낮|3)/i.test(g))return ['2','2'];return ['3','3']}
+function parseCSVText(t){const out=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}else if(c=='"')q=true;else if(c==','){row.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&t[i+1]=='\n')i++;row.push(f);out.push(row);row=[];f=''}else f+=c}if(f||row.length){row.push(f);out.push(row)}return out}
+function gridRows(grid){
+ const hi=grid.findIndex(r=>(r||[]).some(c=>{const t=cellT(c).replace(/\s/g,'');return t==='위험요인'||t==='유해·위험요인'||t==='유해위험요인'}));
+ if(hi<0)return [];
+ const top=hi>0?grid[hi-1]||[]:[];const lab=(grid[hi]||[]).map((c,i)=>cellT(c).replace(/\s/g,'')||cellT(top[i]).replace(/\s/g,''));
+ const find=(...ks)=>{for(const k of ks){const i=lab.findIndex(x=>x===k);if(i>=0)return i}for(const k of ks){const i=lab.findIndex(x=>x.includes(k));if(i>=0)return i}return -1};
+ const ix={B:find('협력사명/공종','협력사'),cat:find('대분류'),sub:find('소분류','단위작업','공종'),grade:find('위험도','등급'),hz:find('위험요인','유해·위험요인','유해위험요인'),act:find('대책방안','감소대책','대책'),sd:find('시작일','평가일'),ed:find('종료일','완료기한'),f:find('빈도','가능성'),s:find('강도','중대성')};
+ const g=(r,k)=>ix[k]>=0?cellT(r[ix[k]]):'';const raw=(r,k)=>ix[k]>=0?r[ix[k]]:'';
+ const out=[];let last={cat:'',sub:'',B:''};
+ for(let i=hi+1;i<grid.length;i++){const r=grid[i]||[];const hz=g(r,'hz');if(!hz)continue;
+  const sub=g(r,'sub')||last.sub,cat=g(r,'cat')||last.cat,B=g(r,'B')||last.B;last={cat,sub,B};
+  out.push({ptnco:B,cat,sub,grade:g(r,'grade'),hz,act:g(r,'act'),sd:raDate(raw(r,'sd')),ed:raDate(raw(r,'ed')),f:g(r,'f'),s:g(r,'s')})}
+ return out;
+}
+async function raReadFile(file){
+ const ext=file.name.split('.').pop().toLowerCase(),buf=await file.arrayBuffer();
+ const txt=()=>{let t=new TextDecoder('utf-8').decode(buf);if(t.includes('�'))try{t=new TextDecoder('euc-kr').decode(buf)}catch(e){}return t.replace(/^﻿/,'')};
+ if(ext==='json'){const j=JSON.parse(txt());if(j&&Array.isArray(j.rows))return {rows:j.rows.map(r=>({ptnco:r.ptnco,cat:r.cat,sub:r.sub,grade:r.grade,hz:r.hz,act:r.act,sd:raDate(r.sd),ed:raDate(r.ed)})),H:j.H||{}};
+  if(Array.isArray(j))return {rows:j.map(r=>({sub:r.sub||r.work,grade:r.grade||r.g,hz:r.hz||r.hazard||r.h,act:r.act||r.measure||r.a,sd:raDate(r.sd||r.date),ed:raDate(r.ed||r.due)})),H:{}};throw new Error('알 수 없는 JSON 형식입니다.')}
+ if(ext==='csv'||ext==='txt')return {rows:gridRows(parseCSVText(txt())),H:{}};
+ if(ext==='xls')throw new Error('.xls(구버전)은 엑셀에서 .xlsx로 다시 저장한 뒤 넣어주세요.');
+ const EJ=await loadLib('https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js','ExcelJS');const wb=new EJ.Workbook();await wb.xlsx.load(buf);
+ let rows=[];wb.eachSheet(ws=>{const g=[],mc=ws.columnCount;ws.eachRow({includeEmpty:true},(row,rn)=>{const a=[];for(let c=1;c<=mc;c++){const cell=row.getCell(c);let v=cell.value;if(cell.isMerged&&cell.master&&cell.master!==cell)v=cell.master.value;a.push(v)}g[rn-1]=a});for(let i=0;i<g.length;i++)if(!g[i])g[i]=[];rows=rows.concat(gridRows(g))});
+ return {rows,H:{}};
+}
+let RA_IMP=null;
+function raImport(){
+ if(!canEdit())return;
+ const inp=document.createElement('input');inp.type='file';inp.accept='.xlsx,.csv,.json,.txt';
+ inp.onchange=async()=>{const f=inp.files[0];if(!f)return;toast('📥 파일 읽는 중…');
+  try{const r=await raReadFile(f);if(!r.rows.length)throw new Error('불러올 항목을 찾지 못했습니다. 머리글에 「위험요인」 칸이 있는지 확인하세요.');RA_IMP={name:f.name,...r};raImportDlg()}
+  catch(e){alert('불러오기 실패: '+e.message)}};
+ inp.click();
+}
+function raImportDlg(){
+ const {name,rows,H}=RA_IMP;const nm=String(name)+' '+(H.prjNm||'')+' '+(H.ptncoNm||'');
+ const kind=H.kind||(/정기/.test(name)?'정기':/최초/.test(name)?'최초':'수시');
+ const site=state.site!=='all'?state.site:((DB.sites.find(s=>nm.replace(/\s/g,'').includes(String(s.name).replace(/현장|\s/g,'')))||DB.sites[0]||{}).id);
+ const d0=rows.find(r=>r.sd)?.sd||today();
+ const cnt=k=>rows.filter(r=>{const [f,s]=r.f&&r.s?[r.f,r.s]:raGradeFS(r.grade);return raGrade(f*s)===k}).length;
+ openModal('📥 위험성평가 불러오기',`<div class="note" style="margin-bottom:12px">📎 <b>${esc(name)}</b> · <b>${rows.length}건</b> 찾음 (상 ${cnt('상')} · 중 ${cnt('중')} · 하 ${cnt('하')})${H.prjNm?' · 현장명: '+esc(H.prjNm):''}<br>위험도 고→상(4×4) · 중→중(3×3) · 저→하(2×2)로 바꿔 넣습니다. 같은 현장에 같은 위험요인이 이미 있으면 건너뜁니다.</div>
+ <form id="raf" class="form"><div class="fld"><span>현장 *</span><select name="site">${DB.sites.map(s=>`<option value="${s.id}" ${s.id===site?'selected':''}>${esc(s.name)}</option>`).join('')}</select></div>
+ <div class="fld"><span>평가 구분</span><select name="kind">${['수시','정기','최초','상시'].map(k=>`<option ${k===kind?'selected':''}>${k}</option>`).join('')}</select></div>
+ <div class="fld"><span>평가일</span><input type="date" name="date" value="${d0}"></div>
+ <div class="fld"><span>대책 상태</span><select name="status"><option>이행중</option><option>대책수립</option><option>완료(효과확인)</option></select></div></form>
+ <div class="tw" style="margin-top:12px;max-height:260px;overflow:auto"><table class="t"><thead><tr><th>공종·작업</th><th>위험도</th><th>유해·위험요인</th><th>감소대책</th></tr></thead><tbody>
+ ${rows.slice(0,30).map(r=>{const [f,s]=r.f&&r.s?[r.f,r.s]:raGradeFS(r.grade);return `<tr><td>${esc(r.sub||r.cat||'')}</td><td>${raBadge(f,s)}</td><td>${esc(r.hz)}</td><td class="mut">${esc(String(r.act||'').slice(0,60))}</td></tr>`}).join('')}${rows.length>30?`<tr><td colspan="4" class="mut">… 외 ${rows.length-30}건</td></tr>`:''}</tbody></table></div>`,
+ [{t:'취소',fn:closeModal},{t:`${rows.length}건 등록`,cls:'primary',fn:raImportSave}]);
+}
+async function raImportSave(){
+ const f=$('#raf'),site=f.site.value,kind=f.kind.value,date=f.date.value||today(),status=f.status.value;
+ const have=new Set((DB.risks||[]).filter(r=>r.siteId===site).map(r=>String(r.hazard).replace(/\s/g,'')));
+ const recs=[];let skip=0;
+ RA_IMP.rows.forEach(r=>{const key=String(r.hz).replace(/\s/g,'');if(have.has(key)){skip++;return}have.add(key);
+  let [fr,sv]=raGradeFS(r.grade);if(r.f&&r.s){fr=String(Math.min(5,Math.max(1,+r.f||3)));sv=String(Math.min(4,Math.max(1,+r.s||3)))}
+  recs.push({id:'ra'+uid(),date:r.sd||date,siteId:site,kind,type:raType(r.hz+' '+(r.sub||'')),work:[r.cat,r.sub].filter(x=>x&&!/추가입력/.test(x)).join(' / ')||'',hazard:r.hz,freq:fr,sev:sv,measure:r.act||'',owner:r.ptnco||'',due:r.ed||'',status,afterF:'',afterS:'',src:'파일: '+RA_IMP.name})});
+ closeModal();if(!recs.length)return toast('새로 등록할 항목이 없습니다 (모두 중복)');
+ DB.risks=(DB.risks||[]).concat(recs);save();RA_CELL='';state.site='all';
+ const mn=recs.map(r=>r.date).sort()[0],mx=recs.map(r=>r.date).sort().slice(-1)[0];if(mn&&mn<state.from)state.from=mn;if(mx&&mx>state.to)state.to=mx;go('risk');
+ if(online()){setSync('busy');try{const j=await api('saveMany',{coll:'risks',recs});VER=j.ver;setSync('ok');pull()}catch(e){if(e.auth)return authFail(e.message);setSync('err',e.message);alert('⚠ 서버 저장 실패: '+e.message+'\n이 PC 화면에만 반영되었습니다.')}}
+ toast(`📥 ${recs.length}건 등록${skip?` · 중복 ${skip}건 건너뜀`:''}`);
+}
 /* ===================== 현장 상세 ===================== */
 function showSite(id){
  const st=DB.sites.find(s=>s.id===id);if(!st)return;const r=siteStats(st);
@@ -1131,7 +1206,7 @@ function listPage(key,opt={}){
  const sc=SCHEMAS[key],rows=rowsOf(key,opt);LAST[key]=rows;
  const cols=(opt.cols||sc.cols).map(k=>VCOLS[k]||sc.fields.find(f=>f.k===k));
  return `<div class="panel" style="margin-bottom:14px"><h3>${opt.title||sc.title+' 목록'} <small>${rows.length}건</small></h3>
- <div class="toolbar"><input placeholder="🔍 목록 내 검색" oninput="filterRows(this)"><span class="sp"></span>${opt.noAdd?'':`<button class="btn primary ed${ADMK.includes(key)?' adm':''}" onclick="openForm('${key}')">＋ 등록</button>`}<button class="btn" onclick="exportCSV('${key}')">CSV(엑셀) 내보내기</button></div>
+ <div class="toolbar"><input placeholder="🔍 목록 내 검색" oninput="filterRows(this)"><span class="sp"></span>${opt.tools||''}${opt.noAdd?'':`<button class="btn primary ed${ADMK.includes(key)?' adm':''}" onclick="openForm('${key}')">＋ 등록</button>`}<button class="btn" onclick="exportCSV('${key}')">CSV(엑셀) 내보내기</button></div>
  <div class="tw"><table class="t"><thead><tr>${cols.map(c=>`<th>${c.l}</th>`).join('')}<th></th></tr></thead><tbody>
  ${rows.map(r=>`<tr class="click" onclick="openForm('${key}','${r.id}')">${cols.map(c=>`<td>${cell(c,r)}</td>`).join('')}<td class="mut">›</td></tr>`).join('')||`<tr><td colspan="${cols.length+1}" class="empty">데이터가 없습니다</td></tr>`}
  </tbody></table></div></div>`;
@@ -1541,4 +1616,6 @@ setSync(online()?'busy':'off');
 if(logged()){render();pull()}else if(online()||!CFG.localOK)lockApp();else render();
 setInterval(async()=>{if(!logged()||document.hidden||PULLING)return;try{const j=await api('ver');if(j.ver!==VER)pull();else setSync('ok')}catch(e){if(e.auth)authFail(e.message);else setSync('err',e.message)}},30000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&logged())pull()});
-</script></body></html>
+</script>
+</body>
+</html>
