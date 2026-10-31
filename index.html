@@ -1033,12 +1033,12 @@ function pgRisk(){
  for(const f of [...RA_F].reverse()){mx+=`<tr><th>${f}</th>`+RA_S.map(sv=>{const n=all.filter(r=>r.freq==f&&r.sev==sv).length,gr=raGrade(f*sv),k=f+'x'+sv;
   return `<td class="${RA_CELL===k?'on':''}" style="background:${RAC[gr]}${n?'':'33'}" onclick="RA_CELL=RA_CELL==='${k}'?'':'${k}';render()" title="빈도${f}×강도${sv}=${f*sv} (${gr})">${n||''}</td>`}).join('')+'</tr>'}
  mx+='</table>';
- return `<div class="raimp ed"><div><b>📥 위험성평가 파일 불러오기</b><span>「위험성평가 자동작성(GS 양식)」에서 받은 <b>엑셀(.xlsx)·저장 JSON·CSV</b> 파일을 첨부하면 목록에 한 번에 등록됩니다.</span></div><button class="btn primary" onclick="raImport()">📎 파일 첨부해서 불러오기</button></div>
+ return `<div class="raimp ed"><div><b>📥 위험성평가 파일 불러오기 · 📤 내보내기</b><span>「위험성평가 자동작성(GS 양식)」에서 받은 <b>엑셀(.xlsx)·저장 JSON·CSV</b> 파일을 첨부하면 한 번에 등록됩니다. 내보내기는 <b>위험성평가표 인쇄 양식(결재란 포함) Word 파일</b>로 받습니다.</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" onclick="raImport()">📎 파일 첨부해서 불러오기</button><button class="btn" onclick="raExport()">📤 위험성평가표 Word 내보내기</button></div></div>
  <div class="sumrow"><div class="panel"><b>${all.length}</b><span>평가 항목</span></div><div class="panel"><b style="color:#e5383b">${g('상')}</b><span>상 (12~20)</span></div><div class="panel"><b style="color:#e08a00">${g('중')}</b><span>중 (6~11)</span></div><div class="panel"><b class="grn">${g('하')}</b><span>하 (1~5)</span></div><div class="panel"><b style="color:${hiOpen?'#e5383b':'#222'}">${hiOpen}</b><span>상위험 대책 미완료</span></div><div class="panel"><b>${all.length?Math.round(done/all.length*100):0}%</b><span>대책 완료(효과확인)</span></div><div class="panel"><b>${doneSites.length}/${sites.length}</b><span>평가 실시 현장</span></div></div>
  <div class="grid2" style="margin-bottom:14px"><div class="panel"><h3>위험도 매트릭스 <small>칸을 누르면 해당 항목만</small></h3><div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">${mx}<div class="note" style="flex:1;min-width:180px">위험도 = 빈도(1~5) × 강도(1~4)<br><b style="color:#e5383b">상 12~20</b> 허용 불가 · 즉시 개선<br><b style="color:#e08a00">중 6~11</b> 조건부 허용 · 개선 계획<br><b style="color:#03a94f">하 1~5</b> 허용 · 현 상태 유지 관리${RA_CELL?`<br><br><button class="btn sm" onclick="RA_CELL='';render()">필터 해제</button>`:''}</div></div></div>
  <div class="panel"><h3>현장별 위험성평가 실시 현황</h3>${sites.map(st=>{const r=all.filter(x=>x.siteId===st.id),h=r.filter(x=>raGrade(raScore(x.freq,x.sev))==='상'&&x.status!=='완료(효과확인)').length;
   return `<div class="bar" onclick="state.site='${st.id}';render()"><span>${esc(st.name)}</span><div class="tr"><div class="fl" style="width:${Math.min(100,r.length*10)}%;background:${r.length?(h?'#e5383b':'#03c75a'):'#ccc'}"></div></div><span class="pc">${r.length?r.length+'건':'<b class="red">미실시</b>'}</span></div>`}).join('')}</div></div>
- ${listPage('risks',{tools:`<button class="btn ed imp" onclick="raImport()">📥 불러오기 (엑셀·JSON)</button>`,title:'위험성평가 목록'+(RA_CELL?' (빈도×강도 '+RA_CELL.replace('x','×')+')':''),filter:RA_CELL?r=>r.freq+'x'+r.sev===RA_CELL:null,sort:(a,b)=>raScore(b.freq,b.sev)-raScore(a.freq,a.sev)||b.date.localeCompare(a.date)})}`;
+ ${listPage('risks',{tools:`<button class="btn ed imp" onclick="raImport()">📥 불러오기 (엑셀·JSON)</button><button class="btn imp" onclick="raExport()" title="인쇄 양식(제목·결재란·기본정보) 그대로 Word 파일로 받기">📤 위험성평가표 (Word)</button>`,title:'위험성평가 목록'+(RA_CELL?' (빈도×강도 '+RA_CELL.replace('x','×')+')':''),filter:RA_CELL?r=>r.freq+'x'+r.sev===RA_CELL:null,sort:(a,b)=>raScore(b.freq,b.sev)-raScore(a.freq,a.sev)||b.date.localeCompare(a.date)})}`;
 }
 function curGoal(){const y=state.to.slice(0,4);const G=(DB.goals||[]).slice().sort((a,b)=>String(b.year).localeCompare(String(a.year)));return G.find(g=>String(g.year)===y)||G[0]||null}
 function kpiActual(){
@@ -1155,6 +1155,100 @@ async function raImportSave(){
  const mn=recs.map(r=>r.date).sort()[0],mx=recs.map(r=>r.date).sort().slice(-1)[0];if(mn&&mn<state.from)state.from=mn;if(mx&&mx>state.to)state.to=mx;go('risk');
  if(online()){setSync('busy');try{const j=await api('saveMany',{coll:'risks',recs});VER=j.ver;setSync('ok');pull()}catch(e){if(e.auth)return authFail(e.message);setSync('err',e.message);alert('⚠ 서버 저장 실패: '+e.message+'\n이 PC 화면에만 반영되었습니다.')}}
  toast(`📥 ${recs.length}건 등록${skip?` · 중복 ${skip}건 건너뜀`:''}`);
+}
+/* ===== 위험성평가표 Word(.docx) — 인쇄 양식 그대로 (외부 모듈 없이 생성) ===== */
+const RDOC=(()=>{
+ const X=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const GC={고:'C62828',중:'C46A00',저:'2E7D32'};
+ const run=(t,o)=>{o=o||{};const rp='<w:rPr><w:rFonts w:ascii="맑은 고딕" w:hAnsi="맑은 고딕" w:eastAsia="맑은 고딕"/>'+(o.b?'<w:b/>':'')+(o.c?'<w:color w:val="'+o.c+'"/>':'')+(o.sp?'<w:spacing w:val="'+o.sp+'"/>':'')+'<w:sz w:val="'+(o.sz||16)+'"/><w:szCs w:val="'+(o.sz||16)+'"/></w:rPr>';
+  return String(t==null?'':t).split('\n').map((l,i)=>(i?'<w:r>'+rp+'<w:br/></w:r>':'')+'<w:r>'+rp+'<w:t xml:space="preserve">'+X(l)+'</w:t></w:r>').join('')};
+ const para=(t,o)=>{o=o||{};return '<w:p><w:pPr><w:spacing w:before="'+(o.bf||0)+'" w:after="'+(o.af||0)+'" w:line="'+(o.ln||228)+'" w:lineRule="auto"/><w:jc w:val="'+(o.al||'center')+'"/></w:pPr>'+run(t,o)+'</w:p>'};
+ const tc=(w,inner,o)=>{o=o||{};return '<w:tc><w:tcPr><w:tcW w:w="'+w+'" w:type="dxa"/>'+(o.span>1?'<w:gridSpan w:val="'+o.span+'"/>':'')+(o.vm?'<w:vMerge'+(o.vm==='r'?' w:val="restart"':'')+'/>':'')+
+  (o.nb?'<w:tcBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/></w:tcBorders>':'')+(o.fill?'<w:shd w:val="clear" w:color="auto" w:fill="'+o.fill+'"/>':'')+'<w:vAlign w:val="'+(o.va||'center')+'"/></w:tcPr>'+(inner||para(''))+'</w:tc>'};
+ const tbl=(ws,rows,o)=>{o=o||{};const tw=ws.reduce((a,b)=>a+b,0);const B=o.nb?'nil':'single';
+  return '<w:tbl><w:tblPr><w:tblW w:w="'+tw+'" w:type="dxa"/>'+(o.jc?'<w:jc w:val="'+o.jc+'"/>':'<w:tblInd w:w="0" w:type="dxa"/>')+'<w:tblLayout w:type="fixed"/><w:tblBorders>'+['top','left','bottom','right','insideH','insideV'].map(k=>'<w:'+k+' w:val="'+B+'" w:sz="4" w:space="0" w:color="555555"/>').join('')+'</w:tblBorders>'+
+  '<w:tblCellMar><w:top w:w="'+(o.mt==null?28:o.mt)+'" w:type="dxa"/><w:left w:w="57" w:type="dxa"/><w:bottom w:w="'+(o.mt==null?28:o.mt)+'" w:type="dxa"/><w:right w:w="57" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>'+ws.map(w=>'<w:gridCol w:w="'+w+'"/>').join('')+'</w:tblGrid>'+rows.join('')+'</w:tbl>'};
+ const tr=(cells,o)=>{o=o||{};return '<w:tr><w:trPr><w:cantSplit/>'+(o.hd?'<w:tblHeader/>':'')+(o.h?'<w:trHeight w:val="'+o.h+'" w:hRule="'+(o.hr||'atLeast')+'"/>':'')+'</w:trPr>'+cells.join('')+'</w:tr>'};
+ const HF='ECEEF1',TW=15704;
+ function section(S){
+  const ap=(S.labels&&S.labels.length?S.labels:['담 당','소 장','대표이사']).slice(0,6),cells=S.cells||[];
+  /* 결재란 */
+  const sw=400,lw=1130,aw=sw+lw*ap.length;
+  const appr=tbl([sw].concat(ap.map(()=>lw)),[
+   tr([tc(sw,para(String(S.side||'결 재').replace(/\s+/g,'').split('').join('\n\n'),{b:1,sz:16}),{vm:'r',fill:HF})].concat(ap.map(l=>tc(lw,para(l,{b:1,sz:16}),{fill:HF}))),{h:330,hr:'exact'}),
+   tr([tc(sw,'',{vm:'c',fill:HF})].concat(ap.map((l,i)=>tc(lw,para(cells[i]||'',{sz:16})))),{h:820,hr:'exact'})],{jc:'right'});
+  const side=Math.max(aw+100,3600),mid=TW-side*2;
+  const head=tbl([side,mid,side],[tr([tc(side,'',{nb:1}),
+    tc(mid,para(S.title||'위 험 성 평 가 표',{b:1,sz:36,sp:60,af:60})+para(S.kind?'[ '+S.kind+' ]':'',{b:1,sz:20}),{nb:1}),
+    tc(side,appr+para('',{sz:4,ln:240}),{nb:1,va:'top'})])],{nb:1,mt:0});
+  /* 기본정보 */
+  const I=S.info||{},th=1300,td=Math.floor((TW-th*3)/3),iw=[th,td,th,td,th,TW-th*3-td*2];
+  const ir=a=>tr(a.map((v,i)=>tc(iw[i],para(v,{b:i%2===0,sz:i%2?17:16,al:i%2?'left':'center'}),{fill:i%2?null:HF})),{h:400});
+  const info=tbl(iw,[ir(['프로젝트',I.prj||'','협력사/공종',I.ptn||'',I.periodLbl||'평가기간',I.period||'']),ir(['작성자',I.writer||'','시공담당',I.sup||'','평가건수',I.count||''])]);
+  /* 본문 */
+  const pc=[3,9,7,7.5,4,3.5,21.6,21.9,6.3,6.3,5.4,4.5];let mw=pc.map(p=>Math.round(TW*p/100));mw[6]+=TW-mw.reduce((a,b)=>a+b,0);
+  const H=(t,i,o)=>tc(o&&o.span?mw.slice(i,i+o.span).reduce((a,b)=>a+b,0):mw[i],t==null?'':para(t,{b:1,sz:16}),Object.assign({fill:HF},o||{}));
+  const hr1=tr([H('No.',0,{vm:'r'}),H('협력사명/공종',1,{vm:'r'}),H('단위작업',2,{span:2}),H('작업내용',4,{span:4}),H('작업일자',8,{span:2}),H('작성자/\n작업팀장',10,{vm:'r'}),H('시공\n담당',11,{vm:'r'})],{hd:1,h:300});
+  const hr2=tr([H(null,0,{vm:'c'}),H(null,1,{vm:'c'})].concat(['대분류','소분류','위험도','구분','위험요인','대책방안','시작일','종료일'].map((t,k)=>H(t,2+k))).concat([H(null,10,{vm:'c'}),H(null,11,{vm:'c'})]),{hd:1,h:300});
+  const L=S.rows||[];
+  const key=[r=>r.B,r=>r.B+'|'+r.cat,r=>r.B+'|'+r.cat+'|'+r.sub];
+  const st=key.map(f=>{const s=new Array(L.length).fill(0);let i=0;while(i<L.length){let j=i+1;while(j<L.length&&f(L[j])===f(L[i]))j++;s[i]=j-i;i=j}return s});
+  const body=L.map((r,i)=>{const g=r.grade||'중',D=(t,k,o)=>tc(mw[k],para(t,Object.assign({sz:15},o||{})));
+   const mg=(k,ci,t,o)=>st[k][i]?tc(mw[ci],para(t,Object.assign({sz:15},o||{})),{vm:st[k][i]>1?'r':null}):tc(mw[ci],'',{vm:'c'});
+   return tr([D(i+1,0),mg(0,1,r.B,{al:'left'}),mg(1,2,r.cat),mg(2,3,r.sub),D(g,4,{b:1,c:GC[g]}),D(r.div||'안전',5),D(r.hz,6,{al:'left'}),D(r.act,7,{al:'left'}),D(r.sd,8),D(r.ed,9),D(r.K,10),D(r.sup,11)],{h:420})});
+  if(!L.length)body.push(tr([tc(TW,para('등록된 위험성평가가 없습니다',{sz:16}),{span:12})],{h:420}));
+  const main=tbl(mw,[hr1,hr2].concat(body));
+  return head+para('',{sz:6,ln:120})+info+para('',{sz:6,ln:120})+main;
+ }
+ /* --- 최소 ZIP(무압축) --- */
+ const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+ const crc=b=>{let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRC[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0};
+ function zip(files){const enc=new TextEncoder(),parts=[],cen=[];let off=0;
+  files.forEach(([name,txt])=>{const nb=enc.encode(name),db=enc.encode(txt),c=crc(db);
+   const lh=new DataView(new ArrayBuffer(30));lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint32(14,c,true);lh.setUint32(18,db.length,true);lh.setUint32(22,db.length,true);lh.setUint16(26,nb.length,true);
+   parts.push(lh.buffer,nb,db);
+   const ch=new DataView(new ArrayBuffer(46));ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint32(16,c,true);ch.setUint32(20,db.length,true);ch.setUint32(24,db.length,true);ch.setUint16(28,nb.length,true);ch.setUint32(42,off,true);
+   cen.push(ch.buffer,nb);off+=30+nb.length+db.length});
+  const cs=cen.reduce((a,b)=>a+b.byteLength,0),end=new DataView(new ArrayBuffer(22));end.setUint32(0,0x06054b50,true);end.setUint16(8,files.length,true);end.setUint16(10,files.length,true);end.setUint32(12,cs,true);end.setUint32(16,off,true);
+  return new Blob(parts.concat(cen,[end.buffer]),{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})}
+ function build(sheets){
+  const W='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"';
+  const pg='<w:p><w:r><w:br w:type="page"/></w:r></w:p>';
+  const sect='<w:sectPr><w:footerReference w:type="default" r:id="rIdF"/><w:pgSz w:w="16838" w:h="11906" w:orient="landscape"/><w:pgMar w:top="567" w:right="567" w:bottom="567" w:left="567" w:header="284" w:footer="284" w:gutter="0"/></w:sectPr>';
+  const doc='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document '+W+'><w:body>'+sheets.map(section).join(pg)+sect+'</w:body></w:document>';
+  const rp='<w:rPr><w:rFonts w:ascii="맑은 고딕" w:hAnsi="맑은 고딕" w:eastAsia="맑은 고딕"/><w:sz w:val="14"/></w:rPr>';
+  const foot='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr '+W+'><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r>'+rp+'<w:fldChar w:fldCharType="begin"/></w:r><w:r>'+rp+'<w:instrText xml:space="preserve"> PAGE </w:instrText></w:r><w:r>'+rp+'<w:fldChar w:fldCharType="separate"/></w:r><w:r>'+rp+'<w:t>1</w:t></w:r><w:r>'+rp+'<w:fldChar w:fldCharType="end"/></w:r><w:r>'+rp+'<w:t xml:space="preserve"> / </w:t></w:r><w:r>'+rp+'<w:fldChar w:fldCharType="begin"/></w:r><w:r>'+rp+'<w:instrText xml:space="preserve"> NUMPAGES </w:instrText></w:r><w:r>'+rp+'<w:fldChar w:fldCharType="separate"/></w:r><w:r>'+rp+'<w:t>1</w:t></w:r><w:r>'+rp+'<w:fldChar w:fldCharType="end"/></w:r></w:p></w:ftr>';
+  const styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles '+W+'><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="맑은 고딕" w:hAnsi="맑은 고딕" w:eastAsia="맑은 고딕" w:cs="맑은 고딕"/><w:sz w:val="16"/><w:lang w:val="ko-KR" w:eastAsia="ko-KR"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="228" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="a"><w:name w:val="Normal"/></w:style><w:style w:type="table" w:default="1" w:styleId="t"><w:name w:val="Normal Table"/><w:tblPr><w:tblCellMar><w:left w:w="57" w:type="dxa"/><w:right w:w="57" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style></w:styles>';
+  return zip([
+   ['[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>'],
+   ['_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
+   ['word/_rels/document.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdS" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdF" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/></Relationships>'],
+   ['word/document.xml',doc],['word/styles.xml',styles],['word/footer1.xml',foot]]);
+ }
+ return {build};
+})();
+function saveDocx(sheets,name){const blob=RDOC.build(sheets),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name.replace(/[\\/:*?"<>|]/g,'')+'.docx';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);}
+/* 대시보드 위험성평가 → 위험성평가표(인쇄 양식) Word. 현장마다 1쪽씩 */
+function raExport(){
+ const list=(LAST.risks||(DB.risks||[]).filter(r=>siteOk(r.siteId)&&inRange(r.date)));
+ if(!list.length)return toast('내보낼 위험성평가가 없습니다');
+ const dt=s=>s?String(s).replace(/-/g,'.'):'',G={상:'고',중:'중',하:'저'},pc=prtCfg(),me=logged()&&CFG.name?CFG.name:'';
+ const by={};list.forEach(r=>(by[r.siteId]=by[r.siteId]||[]).push(r));
+ const ord=id=>{const i=DB.sites.findIndex(x=>x.id===id);return i<0?999:i};
+ const sheets=Object.keys(by).sort((a,b)=>ord(a)-ord(b)).map(id=>{
+  const st=DB.sites.find(x=>x.id===id)||{},L=by[id].slice().sort((a,b)=>String(a.owner||'').localeCompare(String(b.owner||''))||String(a.work||'').localeCompare(String(b.work||''))||raScore(b.freq,b.sev)-raScore(a.freq,a.sev));
+  const rows=L.map(r=>{const w=String(r.work||'').split(/\s*\/\s*/);const two=w.length>1;
+   return {B:r.owner||'',cat:two?w[0]:'',sub:two?w.slice(1).join(' / '):(r.work||''),grade:G[raGrade(raScore(r.freq,r.sev))]||'중',
+    div:/질병|보건|온열|근골|소음|분진|화학|중독|밀폐/.test((r.type||'')+' '+(r.hazard||''))?'보건':'안전',hz:r.hazard||'',
+    act:r.measure||'',sd:dt(r.date),ed:dt(r.due),K:me,sup:st.manager||'',f:r.freq||'',s:r.sev||''}});
+  const c={고:0,중:0,저:0};rows.forEach(r=>c[r.grade]++);
+  const kinds=[...new Set(L.map(r=>r.kind).filter(Boolean))],ds=L.map(r=>r.date).filter(Boolean).sort();
+  const owners=[...new Set(L.map(r=>r.owner).filter(Boolean))];
+  return {sheet:st.name||siteName(id)||'현장',title:'위 험 성 평 가 표',kind:(kinds.length===1?kinds[0]+' ':'')+'위험성평가',side:pc.side,labels:pc.labels,cells:pc.cells,
+   info:{prj:st.name||siteName(id),ptn:owners.slice(0,3).join(', ')+(owners.length>3?' 외 '+(owners.length-3):''),periodLbl:'평가기간',period:ds.length?dt(ds[0])+' ~ '+dt(ds[ds.length-1]):dt(state.from)+' ~ '+dt(state.to),
+    writer:me,sup:st.manager||'',count:'총 '+rows.length+'건 (고 '+c.고+' · 중 '+c.중+' · 저 '+c.저+')'},rows}});
+ saveDocx(sheets,'위험성평가표_'+(state.site==='all'?(sheets.length>1?'전체현장':sheets[0].sheet):siteName(state.site))+'_'+state.from+'_'+state.to);
+ toast('📤 위험성평가표 '+list.length+'건'+(sheets.length>1?' · 현장 '+sheets.length+'곳 (현장마다 새 쪽)':'')+' Word로 내보냄');
 }
 /* ===================== 현장 상세 ===================== */
 function showSite(id){
