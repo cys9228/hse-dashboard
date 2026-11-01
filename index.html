@@ -463,6 +463,7 @@ body.prep [contenteditable="true"]:focus{outline:2px solid #03c75a;background:#f
 #gsov .gsbar b{font-size:16px;color:#0b3d22}#gsov .gsst{font-size:13px;color:#4a5b52}#gsov .sp{flex:1}#gsov iframe{flex:1;width:100%;border:0;background:#fff}
 tr.leg td{background:#fffaf0}
 .rsl{display:grid;grid-template-columns:1fr 1fr;gap:6px}.rsi{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #e3e7ec;border-radius:9px;cursor:pointer;font-size:14px}.rsi span{flex:1}.rsi b{color:#667;font-weight:600;font-size:13px}.rsi:has(input:checked){border-color:#e5383b;background:#fff5f5}@media(max-width:600px){.rsl{grid-template-columns:1fr}}
+.tyb .tyst{display:block;margin-top:6px;font-size:13px;color:#0b6b3a}.tyb .tyst b{display:inline;font-size:13px}
 .raimp{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#f3fcf7;border:1.5px dashed #03c75a;border-radius:12px;padding:12px 16px;margin-bottom:14px}
 .raimp b{display:block;font-size:15px;color:#0b3d22;margin-bottom:2px}.raimp span{font-size:13px;color:#4a5b52}.raimp span b{display:inline;font-size:13px}
 </style>
@@ -563,15 +564,17 @@ const SCHEMAS={
  edu:{title:'교육 기록',cols:['date','siteId','kind','title','lang','target','attended','_rate','qr'],fields:[
   {k:'date',l:'교육일',t:'date',req:1},{k:'siteId',l:'현장',t:'site',req:1},
   {k:'kind',l:'교육 구분',t:'select',o:['정기교육','신규채용자교육','특별교육','TBM','외국인 근로자 교육','관리감독자교육']},
-  {k:'lang',l:'교육 언어',t:'select',o:['한국어','다국어(번역 방송)','베트남어','중국어','영어','우즈벡어','기타']},
+  {k:'lang',l:'교육 언어',t:'select',o:['한국어','다국어(통역시스템)','베트남어','중국어','영어','우즈벡어','기타']},
   {k:'title',l:'교육 주제',t:'text',req:1,wide:1},
   {k:'target',l:'대상 인원',t:'number'},{k:'attended',l:'참석(이수) 인원',t:'number'},
   {k:'qr',l:'QR 참여 인원',t:'number'},{k:'teacher',l:'교육 담당',t:'text'},
   {k:'note',l:'비고',t:'textarea'}]},
- broadcasts:{title:'번역 방송',cols:['date','siteId','topic','langs','count','listeners'],fields:[
-  {k:'date',l:'방송일',t:'date',req:1},{k:'siteId',l:'현장',t:'site',req:1},
-  {k:'topic',l:'방송 내용',t:'text',req:1,wide:1},{k:'langs',l:'번역 언어',t:'text',ph:'예) 베트남어, 중국어'},
-  {k:'count',l:'방송 횟수',t:'number'},{k:'listeners',l:'청취 인원',t:'number'}]},
+ broadcasts:{title:'다국어 교육 실적',cols:['date','siteId','kind','topic','langs','count','listeners','src'],fields:[
+  {k:'date',l:'교육일',t:'date',req:1},{k:'siteId',l:'현장',t:'site',req:1},
+  {k:'kind',l:'교육 구분',t:'select',o:['TBM','정기 안전보건교육','채용 시 교육','작업내용 변경 시 교육','특별교육','기타 안전교육']},{k:'time',l:'교육 시간',t:'text',ph:'예) 07:00~07:30'},
+  {k:'topic',l:'교육 내용',t:'text',req:1,wide:1},{k:'langs',l:'통역 언어',t:'text',ph:'예) 베트남어, 중국어'},
+  {k:'count',l:'통역 방송 횟수',t:'number'},{k:'listeners',l:'참여 인원(외국인)',t:'number'},{k:'who',l:'교육 실시자',t:'text'},
+  {k:'src',l:'출처',t:'text',ph:'직접 입력 / 통역시스템'},{k:'note',l:'통역 문장 (자동 기록)',t:'textarea',wide:1}]},
  inspections:{title:'현장 점검',cols:['date','siteId','kind','inspector','score','result','findings'],fields:[
   {k:'date',l:'점검일',t:'date',req:1},{k:'siteId',l:'현장',t:'site',req:1},
   {k:'kind',l:'점검 구분',t:'select',o:['대표이사 점검','안전팀 정기점검','합동점검','불시점검','외부 점검']},
@@ -603,7 +606,7 @@ function load(){
  ['hazards','edu','broadcasts','inspections','directives','notices','sites'].forEach(k=>DB[k]=DB[k]||[]);
  if(!DB.accidents)DB.accidents=(!online()&&DB.sites.some(x=>x.id==='s1'))?demoAcc():[];
  if(!DB.vworkers)DB.vworkers=(!online()&&DB.sites.some(x=>x.id==='s1'))?demoVW():[];
- DB.vsum=DB.vsum||[];syncVTR();
+ DB.vsum=DB.vsum||[];syncVTR();(DB.edu||[]).forEach(e=>{if(e.lang==='다국어(번역 방송)')e.lang='다국어(통역시스템)'});
  if(!DB.hrwork)DB.hrwork=(!online()&&DB.sites.some(x=>x.id==='s1'))?demoHR():[];
  if(!DB.risks)DB.risks=(!online()&&DB.sites.some(x=>x.id==='s1'))?demoRA():[];
  if(!DB.goals)DB.goals=(!online()&&DB.sites.some(x=>x.id==='s1'))?demoGoal():[];
@@ -634,9 +637,9 @@ function demo(){
    if(w===0&&i<3)continue;
    const tg=Math.round(st.workers*(.25+rnd()*.15));const at=Math.min(tg,Math.round(tg*rates[i]*(.97+rnd()*.06)));
    const fl=st.foreign>20;
-   edu.push({id:uid()+'e'+w+i,date:addDays(T,-w*7-Math.floor(rnd()*4)-(w===0?0:0)),siteId:st.id,kind:pick(['정기교육','TBM','특별교육','신규채용자교육',fl?'외국인 근로자 교육':'정기교육']),title:pick(TT),lang:fl?'다국어(번역 방송)':'한국어',target:tg,attended:at,qr:Math.round(at*(.7+rnd()*.25)),teacher:st.manager,note:''});
+   edu.push({id:uid()+'e'+w+i,date:addDays(T,-w*7-Math.floor(rnd()*4)-(w===0?0:0)),siteId:st.id,kind:pick(['정기교육','TBM','특별교육','신규채용자교육',fl?'외국인 근로자 교육':'정기교육']),title:pick(TT),lang:fl?'다국어(통역시스템)':'한국어',target:tg,attended:at,qr:Math.round(at*(.7+rnd()*.25)),teacher:st.manager,note:''});
    const nb=Math.floor(rnd()*2)+(fl?1:0);
-   for(let b=0;b<nb;b++)bc.push({id:uid()+'b'+w+b+i,date:addDays(T,-w*7-Math.floor(rnd()*5)),siteId:st.id,topic:pick(TT)+' 안내 방송',langs:pick(['베트남어, 중국어','중국어, 우즈벡어','베트남어, 영어, 태국어']),count:1+Math.floor(rnd()*3),listeners:Math.round(st.foreign*(.6+rnd()*.4))});
+   for(let b=0;b<nb;b++)bc.push({id:uid()+'b'+w+b+i,date:addDays(T,-w*7-Math.floor(rnd()*5)),siteId:st.id,topic:pick(TT),langs:pick(['베트남어, 중국어','중국어, 우즈벡어','베트남어, 영어, 태국어']),count:1+Math.floor(rnd()*3),listeners:Math.round(st.foreign*(.6+rnd()*.4))});
  }});
  const ins=[];
  sites.forEach((st,i)=>{for(let k=0;k<2;k++){const sc=72+Math.floor(rnd()*27);ins.push({id:uid()+'i'+k+i,date:addDays(T,-k*20-Math.floor(rnd()*10)),siteId:st.id,kind:k?'안전팀 정기점검':'대표이사 점검',inspector:k?'본사 안전팀':'대표이사',score:sc,result:sc>=85?'적합':sc>=75?'개선필요':'불량',findings:sc>=85?'특이사항 없음':'개구부 관리 및 정리정돈 보완 요망'})}});
@@ -704,7 +707,7 @@ const MENU=[
  {g:'본사 안전팀 메뉴'},
  {k:'perf',i:'🏗️',t:'현장별 실적'},{k:'open',i:'⛔',t:'미조치 사항'},{k:'hrw',i:'🏗️',t:'고위험작업 현황'},{k:'repeat',i:'🔁',t:'반복 부적합'},{k:'eduRate',i:'🎓',t:'교육 이행률'},{k:'inspect',i:'📋',t:'현장 점검'},{k:'directives',i:'📌',t:'대표이사 지시사항'},
  {g:'현장 관리자 메뉴'},
- {k:'broadcast',i:'📢',t:'번역 방송'},{k:'qr',i:'🔳',t:'QR 참여'},{k:'edu',i:'📘',t:'교육 기록'},{k:'photos',i:'📷',t:'사진 등록'},{k:'improve',i:'✅',t:'위험요인 개선'},
+ {k:'broadcast',i:'🌏',t:'다국어 교육 실적'},{k:'qr',i:'🔳',t:'QR 참여'},{k:'edu',i:'📘',t:'교육 기록'},{k:'photos',i:'📷',t:'사진 등록'},{k:'improve',i:'✅',t:'위험요인 개선'},
  {g:''},{k:'settings',i:'⚙️',t:'설정 / 현장·공지 관리'},{k:'members',i:'👥',t:'회원 관리',adm:1}];
 const PAGES={
  overview:{t:'본사 통합 안전현황',d:'',r:pgOverview},
@@ -722,7 +725,7 @@ const PAGES={
  eduRate:{t:'교육 이행률',d:'현장별 교육 대상 대비 이수 인원 비율입니다.',r:pgEduRate},
  inspect:{t:'현장 점검',d:'대표이사·본사 안전팀 현장 점검 기록입니다.',r:()=>listPage('inspections')},
  directives:{t:'대표이사 지시사항',d:'지시사항 이행 현황을 관리합니다.',r:()=>listPage('directives',{range:false})},
- broadcast:{t:'번역 방송',d:'외국인 근로자 대상 다국어 번역 방송 실적입니다.',r:()=>listPage('broadcasts')},
+ broadcast:{t:'다국어 교육 실적',d:'외국인 근로자 대상 다국어(통역) 안전교육 실적입니다. 「안전교육 통역시스템」으로 교육한 기록을 그대로 가져올 수 있습니다.',r:pgBroadcast},
  qr:{t:'QR 참여',d:'교육 시 QR로 참여(서명)한 인원 현황입니다. 교육 기록 등록 시 QR 참여 인원을 입력합니다.',r:pgQR},
  edu:{t:'교육 기록',d:'현장별 안전교육 실시 기록입니다.',r:()=>listPage('edu')},
  photos:{t:'사진 등록',d:'위험요인 조치 전·후 사진을 등록하고 확인합니다.',r:pgPhotos},
@@ -861,8 +864,8 @@ function pgOverview(){
   <div class="panel alertp alerts"><h3><span style="background:#dc3540;color:#fff;padding:3px 14px;border-radius:999px;font-size:15px">🔔 긴급 알림</span> <span class="lnk" onclick="go('open')">전체보기 ›</span></h3>
   ${vwAlertHtml()}${alerts.map(h=>{const [t,c]=lvl(h);const d=diffDays(h.due||T,T);return `<div class="it" onclick="openForm('hazards','${h.id}')"><div class="tx"><b>${esc(siteName(h.siteId))} - ${esc(h.desc)}</b><span>조치기한 : ${h.due||'-'} <span class="${d<=1?'red':'org'}">(${d<0?'기한초과 '+(-d)+'일':d===0?'오늘':d+'일 남음'})</span></span></div><span>›</span></div>`}).join('')||'<div class="mut" style="padding:10px 0">미조치 위험요인이 없습니다 👍</div>'}
   </div>
-  <div class="panel"><h3>교육 및 방송 실적 <small>선택 기간</small></h3><div class="stats">
-   <div class="stat" onclick="go('broadcast')"><div class="si">📢</div><div><div class="l">다국어 방송 횟수</div><div class="n">${bcCnt}<small>회</small></div></div></div>
+  <div class="panel"><h3>교육 · 다국어 교육 실적 <small>선택 기간</small></h3><div class="stats">
+   <div class="stat" onclick="go('broadcast')"><div class="si">🌏</div><div><div class="l">다국어 교육(통역 방송)</div><div class="n">${bcCnt}<small>회</small></div></div></div>
    <div class="stat" onclick="go('edu')"><div class="si">👥</div><div><div class="l">교육 참여 인원</div><div class="n">${att.toLocaleString()}<small>명</small></div></div></div>
    <div class="stat" onclick="go('qr')"><div class="si">🔳</div><div><div class="l">QR 참여 인원</div><div class="n">${qr.toLocaleString()}<small>명</small></div></div></div>
    <div class="stat r" onclick="go('eduRate')"><div class="si">🎯</div><div><div class="l">이수율</div><div class="n">${eduAvg}<small>%</small></div></div></div>
@@ -1371,6 +1374,79 @@ function raExport(docId){
  saveDocx(sheets,'위험성평가표_'+nm);
  toast('📤 위험성평가표 '+list.length+'건'+(sheets.length>1?' · '+sheets.length+'쪽 묶음':'')+' Word로 내보냄');
 }
+
+/* ===================== 안전교육 통역시스템 연동 (다국어 교육 실적) ===================== */
+const TY_URL='https://cys9228.github.io/multilang-safety/tongyeok-2.html';
+function tyRecs(){try{const a=JSON.parse(localStorage.getItem('dnTrRec')||'[]');return Array.isArray(a)?a.filter(x=>x&&x.t&&(x.s||x.r)):[]}catch(e){return []}}
+function tyForm(){try{return JSON.parse(localStorage.getItem('dnTrRecF')||'{}')||{}}catch(e){return {}}}
+function tyDays(){const g={};tyRecs().forEach(x=>{const d=new Date(+x.t),k=fmt(d);(g[k]=g[k]||[]).push(x)});
+ return Object.keys(g).sort().reverse().map(date=>{const L=g[date].sort((a,b)=>a.t-b.t),hm=t=>{const d=new Date(+t);return pad(d.getHours())+':'+pad(d.getMinutes())};
+  const langs=[...new Set(L.map(x=>x.fn).filter(Boolean))],ks=L.filter(x=>x.d!=='f2k').map(x=>String(x.s||'').trim()).filter(Boolean);
+  return {date,n:L.length,time:hm(L[0].t)+'~'+hm(L[L.length-1].t),langs:langs.join(', '),topic:[...new Set(ks)].slice(0,2).map(t=>t.length>28?t.slice(0,28)+'…':t).join(' / ')||'통역 안전교육',
+   note:L.slice(0,40).map(x=>(x.d==='f2k'?'['+(x.fn||'')+'→한국어] '+(x.s||'')+' → '+(x.r||''):'['+(x.fn||'')+'] '+(x.s||'')+' → '+(x.r||''))).join('\n')+(L.length>40?'\n… 외 '+(L.length-40)+'문장':'')}});}
+function pgBroadcast(){
+ const R=tyRecs(),last=R.length?fmt(new Date(Math.max(...R.map(x=>+x.t)))):'';
+ return `<div class="raimp tyb"><div><b>🌏 안전교육 통역시스템 연동</b><span>한국어로 말하면 다국어로 통역해 스피커로 방송하는 <b>「안전교육 통역시스템」</b>과 연결됩니다. <br><b>① 본사 PC</b> : 현장에서 통역시스템 「📋 교육 기록 → 📊 엑셀로 받기」 파일을 카톡으로 받아 <b>「📎 통역 엑셀 가져오기」</b> &nbsp;·&nbsp; <b>② 현장 휴대폰</b> : 교육한 휴대폰 크롬에서 <b>「📱 휴대폰 기록 가져오기」</b><br>날짜별 교육 실적(언어·방송 횟수·교육 시간)이 자동으로 등록됩니다.</span>
+ <span class="tyst">${R.length?`📱 이 기기에 통역 기록 <b>${R.length}문장</b> · ${tyDays().length}일 (최근 ${last})`:'📱 이 기기에는 아직 통역시스템 기록이 없습니다'}</span></div>
+ <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn primary" style="text-decoration:none" href="${TY_URL}" target="_blank" rel="noopener">🎙 통역시스템 열기</a><button class="btn primary ed" onclick="tyFile()">📎 통역 엑셀 가져오기 (PC)</button><button class="btn ed" onclick="tyImport()">📱 휴대폰 기록 가져오기</button></div></div>
+ ${listPage('broadcasts',{title:'다국어 교육 실적 목록'})}`;
+}
+function tyImport(){
+ const days=tyDays();
+ if(!days.length)return alert('이 기기(브라우저)에는 통역시스템 교육 기록이 없습니다.\n\n· 본사 PC라면 : 현장에서 받은 통역시스템 엑셀 파일을 「📎 통역 엑셀 가져오기」로 넣으세요.\n· 현장 휴대폰이라면 : 통역시스템으로 교육한 휴대폰의 크롬에서 대시보드를 열고 이 버튼을 누르세요.');
+ tyDlg(days,tyForm(),'📱 휴대폰 통역 기록 가져오기','통역시스템으로 방송한 문장 기록을');
+}
+/* PC : 통역시스템 「교육 기록 · 엑셀로 받기」 파일 → 날짜별 실적 */
+async function tyFile(){
+ const file=await new Promise(ok=>{const i=document.createElement('input');i.type='file';i.accept='.xlsx';i.onchange=()=>ok(i.files[0]);i.click()});if(!file)return;
+ try{toast('엑셀 읽는 중…');const EJ=await loadLib('https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js','ExcelJS');const wb=new EJ.Workbook();await wb.xlsx.load(await file.arrayBuffer());
+  const T=v=>cellT(v).replace(/\s+/g,' ').trim(),grid=ws=>{const g=[];ws.eachRow({includeEmpty:true},(row,rn)=>{const a=[];for(let c=1;c<=ws.columnCount;c++){const cell=row.getCell(c);let v=cell.value;if(cell.isMerged&&cell.master&&cell.master!==cell)v=null;a.push(T(v))}g[rn-1]=a});for(let i=0;i<g.length;i++)g[i]=g[i]||[];return g};
+  let days=[],F={},names=0,topic='';
+  wb.eachSheet(ws=>{const g=grid(ws);
+   const lab=k=>{for(const r of g){const i=r.findIndex(x=>x.replace(/\s/g,'')===k);if(i>=0){const v=r.slice(i+1).find(x=>x);if(v)return v}}return ''};
+   if(!F.rSite)F.rSite=lab('현장명');if(!F.rKind)F.rKind=lab('교육구분');if(!F.rWho)F.rWho=lab('교육실시자');
+   const hi=g.findIndex(r=>r.some(x=>x.replace(/\s/g,'')==='교육일자'));
+   if(hi>=0){const H=g[hi].map(x=>x.replace(/\s/g,'')),ci=k=>H.findIndex(x=>x===k||x.startsWith(k));const cD=ci('교육일자'),cT=ci('교육시간'),cR=ci('실시시간'),cL=ci('교육언어'),cN=ci('방송');
+    for(let i=hi+1;i<g.length;i++){const r=g[i],m=(r[cD]||'').match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);if(!m){if(r.every(x=>!x))break;continue}
+     days.push({date:m[1]+'-'+pad(+m[2])+'-'+pad(+m[3]),time:(r[cT]||'').replace(/\s/g,''),dur:r[cR]||'',langs:r[cL]||'',n:parseInt(r[cN])||1,topic:'',note:''})}
+    const ti=g.findIndex(r=>r.some(x=>x.replace(/\s/g,'')==='교육내용'));if(ti>=0&&!topic){const t=(g[ti+1]||[]).find(x=>x&&!/^\d+$/.test(x));if(t)topic=t.replace(/^○\s*/,'')}}
+   const ni=g.findIndex(r=>r.filter(x=>x.replace(/\s/g,'')==='성명').length);
+   if(ni>=0){const cols=g[ni].map((x,i)=>x.replace(/\s/g,'')==='성명'?i:-1).filter(i=>i>=0);for(let i=ni+1;i<g.length;i++)cols.forEach(c=>{if(g[i][c])names++})}});
+  if(!days.length)return alert('통역시스템 교육 기록 엑셀이 아닙니다.\n(통역시스템 「📋 교육 기록 · 증빙 출력 → 📊 엑셀로 받기」로 받은 파일을 넣어 주세요)');
+  days.forEach(d=>{d.topic=topic||((F.rKind||'안전교육')+' (다국어 통역)');d.note='통역시스템 엑셀: '+file.name+(d.dur?' · 실시 '+d.dur:'')});
+  if(names&&days.length===1)days[0].ppl=names;
+  days.sort((a,b)=>b.date.localeCompare(a.date));
+  tyDlg(days,F,'📎 통역시스템 엑셀 가져오기','통역시스템 교육 기록 엑셀('+esc(file.name)+')의 일자별 현황을');
+ }catch(e){alert('엑셀을 읽지 못했습니다: '+e.message)}
+}
+function tyDlg(days,F,title,lead){
+ const ss=visSites();const fs=String(F.rSite||'').replace(/\s/g,'');
+ const auto=(ss.find(s=>fs&&(fs.includes(s.name.replace(/\s/g,''))||s.name.replace(/\s/g,'').includes(fs)))||{}).id||(state.site!=='all'?state.site:(ss[0]||{}).id);
+ const KO=SCHEMAS.broadcasts.fields.find(f=>f.k==='kind').o,kind=KO.includes(F.rKind)?F.rKind:(/정기/.test(F.rKind||'')?'정기 안전보건교육':/채용/.test(F.rKind||'')?'채용 시 교육':/특별/.test(F.rKind||'')?'특별교육':'TBM');
+ window.TY_DAYS=days;
+ const ex=id=>(DB.broadcasts||[]).find(b=>b.id===id);
+ openModal(title,`<div class="note" style="margin-bottom:10px">${lead} <b>날짜별 1건</b>의 교육 실적으로 등록합니다. 같은 날짜를 다시 가져오면 새로 생기지 않고 <b>갱신</b>됩니다.</div>
+ <div class="form" id="tyf"><div class="fld"><span>현장</span><select name="site" onchange="tyMark()">${ss.map(s=>`<option value="${s.id}" ${s.id===auto?'selected':''}>${esc(s.name)}</option>`).join('')}</select></div>
+ <div class="fld"><span>교육 구분</span><select name="kind">${KO.map(o=>`<option ${o===kind?'selected':''}>${o}</option>`).join('')}</select></div>
+ <div class="fld"><span>교육 실시자</span><input name="who" value="${esc(F.rWho||(logged()?CFG.name:'')||'')}"></div></div>
+ <div class="tw" style="max-height:46vh;overflow:auto;margin-top:10px"><table class="t"><thead><tr><th><input type="checkbox" checked onchange="document.querySelectorAll('.tyc').forEach(c=>c.checked=this.checked)"></th><th>교육일</th><th>시간</th><th>통역 언어</th><th class="num">방송</th><th>교육 내용</th><th>참여 인원</th><th></th></tr></thead><tbody>
+ ${days.map((d,i)=>`<tr><td><input type="checkbox" class="tyc" data-i="${i}" checked></td><td>${d.date}</td><td>${d.time}</td><td>${esc(d.langs)}</td><td class="num">${d.n}회</td><td><input class="tyt" data-i="${i}" value="${esc(d.topic)}" style="width:100%;min-width:180px"></td><td><input class="tyn" data-i="${i}" type="number" min="0" placeholder="명" value="${d.ppl||''}" style="width:70px"></td><td class="tym" data-i="${i}"></td></tr>`).join('')}
+ </tbody></table></div>`,[{t:'취소',fn:closeModal},{t:'선택한 날짜 등록',cls:'primary',fn:tySave}]);
+ tyMark();
+}
+function tyMark(){const site=$('#tyf [name=site]').value;(window.TY_DAYS||[]).forEach((d,i)=>{const e=(DB.broadcasts||[]).find(b=>b.id==='ty_'+site+'_'+d.date),m=document.querySelector(`.tym[data-i="${i}"]`),n=document.querySelector(`.tyn[data-i="${i}"]`);
+ if(m)m.innerHTML=e?'<span class="org" style="font-size:12px;white-space:nowrap">등록됨 · 갱신</span>':'<span class="grn" style="font-size:12px">새로</span>';if(n&&e&&e.listeners!==''&&e.listeners!=null&&!n.value)n.value=e.listeners})}
+async function tySave(){
+ const f=$('#tyf'),g=n=>f.querySelector(`[name=${n}]`).value,site=g('site'),kind=g('kind'),who=g('who').trim(),days=window.TY_DAYS||[];
+ const recs=[...document.querySelectorAll('.tyc:checked')].map(c=>{const i=+c.dataset.i,d=days[i],id='ty_'+site+'_'+d.date,o=(DB.broadcasts||[]).find(b=>b.id===id)||{};
+  const nv=document.querySelector(`.tyn[data-i="${i}"]`).value;
+  return Object.assign({},o,{id,date:d.date,siteId:site,kind,time:d.time,topic:document.querySelector(`.tyt[data-i="${i}"]`).value.trim()||d.topic,langs:d.langs,count:d.n,listeners:nv===''?(o.listeners??''):+nv,who,src:'통역시스템',note:d.note})});
+ if(!recs.length)return alert('가져올 날짜를 하나 이상 체크하세요.');
+ const ids=new Set(recs.map(r=>r.id));DB.broadcasts=(DB.broadcasts||[]).filter(b=>!ids.has(b.id)).concat(recs);save();closeModal();
+ const mn=recs.map(r=>r.date).sort()[0];if(mn<state.from)state.from=mn;render();
+ if(online()){setSync('busy');try{const j=await api('saveMany',{coll:'broadcasts',recs});VER=j.ver;setSync('ok');pull()}catch(e){if(e.auth)return authFail(e.message);setSync('err',e.message);return alert('⚠ 서버 저장 실패: '+e.message+'\n이 기기에만 저장되었습니다.')}}
+ toast(`🌏 다국어 교육 실적 ${recs.length}일치 등록 — 대시보드에 반영됨`);
+}
 /* ===================== 현장 상세 ===================== */
 function showSite(id){
  const st=DB.sites.find(s=>s.id===id);if(!st)return;const r=siteStats(st);
@@ -1445,7 +1521,7 @@ function pgCompare(){
  const tot={found:sum(rows,r=>r.found),done:sum(rows,r=>r.done),open:sum(rows,r=>r.open),od:sum(rows,r=>r.overdue),tgt:sum(rows,r=>r.tgt),att:sum(rows,r=>r.att)};
  return `<div class="panel">
  <h3>현장별 핵심 지표 비교 <span class="noprint"><button class="btn primary" onclick="printPrep()">🖨 보고서 인쇄</button></span></h3>
- <div class="tw"><table class="t"><thead><tr><th>현장명</th><th>상태</th><th class="num">발견</th><th class="num">완료</th><th class="num">미조치</th><th class="num">기한초과</th><th class="num">개선 완료율</th><th class="num">교육 이행률</th><th class="num">미이수</th><th class="num">산재</th><th class="num">공상</th><th class="num">점검(평균)</th><th class="num">번역방송</th></tr></thead><tbody>
+ <div class="tw"><table class="t"><thead><tr><th>현장명</th><th>상태</th><th class="num">발견</th><th class="num">완료</th><th class="num">미조치</th><th class="num">기한초과</th><th class="num">개선 완료율</th><th class="num">교육 이행률</th><th class="num">미이수</th><th class="num">산재</th><th class="num">공상</th><th class="num">점검(평균)</th><th class="num">다국어 교육</th></tr></thead><tbody>
  ${rows.map(r=>`<tr class="click" onclick="showSite('${r.st.id}')"><td><b>${esc(r.st.name)}</b></td><td>${badge(r.status)}</td><td class="num">${r.found}</td><td class="num">${r.done}</td><td class="num ${r.open?'red':''}">${r.open}</td><td class="num ${r.overdue?'red':''}">${r.overdue}</td><td class="num">${r.doneRate}%</td><td class="num" style="color:${rateColor(r.rate)};font-weight:700">${r.rate==null?'-':r.rate+'%'}</td><td class="num">${r.miss}</td><td class="num ${r.sanjae?'red':''}">${r.sanjae}</td><td class="num ${r.gongsang?'org':''}">${r.gongsang}</td><td class="num">${r.insCnt}회${r.insAvg!=null?` (${r.insAvg}점)`:''}</td><td class="num">${r.bcCnt}회</td></tr>`).join('')}
  <tr style="font-weight:800"><td>합계</td><td></td><td class="num">${tot.found}</td><td class="num">${tot.done}</td><td class="num">${tot.open}</td><td class="num">${tot.od}</td><td class="num">${tot.found?Math.round(tot.done/tot.found*100):100}%</td><td class="num">${tot.tgt?Math.round(tot.att/tot.tgt*100):0}%</td><td class="num">${tot.tgt-tot.att}</td><td class="num">${sum(rows,r=>r.sanjae)}</td><td class="num">${sum(rows,r=>r.gongsang)}</td><td></td><td></td></tr>
  </tbody></table></div>
@@ -1455,7 +1531,7 @@ function pgPerf(){
  return `<div class="cards">${visSites().map(siteStats).map(r=>`<div class="panel card" onclick="showSite('${r.st.id}')"><div class="ttl">${esc(r.st.name)} ${badge(r.status)}</div>
  <div class="mut" style="font-size:12px;margin-bottom:10px">📍${esc(r.st.region)} · ${esc(r.st.manager||'-')} · 근로자 ${r.st.workers||0}명</div>
  <div class="mini"><div><b class="${r.open?'red':''}">${r.open}</b><span>미조치</span></div><div><b>${r.doneRate}%</b><span>개선완료율</span></div><div><b style="color:${rateColor(r.rate)}">${r.rate==null?'-':r.rate+'%'}</b><span>교육이행률</span></div>
- <div><b>${r.eduCnt}</b><span>교육 횟수</span></div><div><b>${r.insAvg??'-'}</b><span>점검 평균</span></div><div><b>${r.bcCnt}</b><span>번역방송</span></div></div></div>`).join('')}</div>`;
+ <div><b>${r.eduCnt}</b><span>교육 횟수</span></div><div><b>${r.insAvg??'-'}</b><span>점검 평균</span></div><div><b>${r.bcCnt}</b><span>다국어 교육</span></div></div></div>`).join('')}</div>`;
 }
 function repeatGroups(){
  const g={};DB.hazards.filter(h=>siteOk(h.siteId)&&inRange(h.date)).forEach(h=>{const k=h.siteId+'|'+h.type;(g[k]=g[k]||[]).push(h)});
@@ -1580,7 +1656,7 @@ function pgSettings(){
 }
 function setRole(v){DB.settings.role=v;save();render()}
 /* ===== 관리자 : 자료 초기화 (항목 골라서 지우기 · 자동 백업 · 「초기화」 입력 확인) ===== */
-const RESET_ITEMS=[['risks','위험성평가'],['hazards','위험요인 (개선·조치 이력 포함)'],['accidents','산재·공상·아차사고'],['edu','교육 기록'],['broadcasts','번역 방송'],['inspections','현장 점검'],['hrwork','고위험작업'],['vworkers','취약근로자'],['directives','대표이사 지시사항'],['notices','공지사항'],['goals','안전보건 목표(KPI)'],['sites','현장 목록']];
+const RESET_ITEMS=[['risks','위험성평가'],['hazards','위험요인 (개선·조치 이력 포함)'],['accidents','산재·공상·아차사고'],['edu','교육 기록'],['broadcasts','다국어 교육 실적'],['inspections','현장 점검'],['hrwork','고위험작업'],['vworkers','취약근로자'],['directives','대표이사 지시사항'],['notices','공지사항'],['goals','안전보건 목표(KPI)'],['sites','현장 목록']];
 function resetDlg(){
  if(online()&&!isAdmin())return alert('자료 초기화는 관리자만 할 수 있습니다.');
  const row=([k,l])=>{const n=(DB[k]||[]).length,def=!['sites','goals'].includes(k)&&n>0;return `<label class="rsi"><input type="checkbox" value="${k}" ${def?'checked':''}><span>${l}</span><b>${n}건</b></label>`};
@@ -1677,7 +1753,7 @@ const canEdit=()=>!online()||CFG.role==='관리자'||CFG.role==='입력';
 const ROLE_TXT={관리자:'관리자',입력:'입력 권한',열람:'열람 전용'};
 const whoAmI=()=>logged()&&CFG.name?CFG.name+(CFG.title&&CFG.title!==CFG.name?' '+CFG.title:''):DB.settings.role;
 function emptyDB(){const d={settings:{role:'대표이사',company:PRESET_COMPANY||'이재성플랫폼'}};COLL_KEYS.forEach(k=>d[k]=[]);return d}
-function normalize(k,r){const o={...r};((SCHEMAS[k]||{}).fields||[]).forEach(f=>{if((f.t==='number'||f.t==='pct')&&o[f.k]!==undefined)o[f.k]=o[f.k]===''?'':+o[f.k];if(f.t==='check')o[f.k]=isT(o[f.k])});return o}
+function normalize(k,r){const o={...r};if(k==='edu'&&o.lang==='다국어(번역 방송)')o.lang='다국어(통역시스템)';((SCHEMAS[k]||{}).fields||[]).forEach(f=>{if((f.t==='number'||f.t==='pct')&&o[f.k]!==undefined)o[f.k]=o[f.k]===''?'':+o[f.k];if(f.t==='check')o[f.k]=isT(o[f.k])});return o}
 async function api(action,data={},url){
  let r,j;
  try{r=await fetch(url||CFG.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,token:CFG.token,...data})})}
