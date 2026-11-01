@@ -462,6 +462,7 @@ body.prep [contenteditable="true"]:focus{outline:2px solid #03c75a;background:#f
 #gsov .gsbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 14px;background:#fff;border-bottom:2px solid #03c75a;box-shadow:0 2px 6px rgba(0,0,0,.06)}
 #gsov .gsbar b{font-size:16px;color:#0b3d22}#gsov .gsst{font-size:13px;color:#4a5b52}#gsov .sp{flex:1}#gsov iframe{flex:1;width:100%;border:0;background:#fff}
 tr.leg td{background:#fffaf0}
+.rsl{display:grid;grid-template-columns:1fr 1fr;gap:6px}.rsi{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #e3e7ec;border-radius:9px;cursor:pointer;font-size:14px}.rsi span{flex:1}.rsi b{color:#667;font-weight:600;font-size:13px}.rsi:has(input:checked){border-color:#e5383b;background:#fff5f5}@media(max-width:600px){.rsl{grid-template-columns:1fr}}
 .raimp{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#f3fcf7;border:1.5px dashed #03c75a;border-radius:12px;padding:12px 16px;margin-bottom:14px}
 .raimp b{display:block;font-size:15px;color:#0b3d22;margin-bottom:2px}.raimp span{font-size:13px;color:#4a5b52}.raimp span b{display:inline;font-size:13px}
 </style>
@@ -1573,11 +1574,36 @@ function pgSettings(){
  <div class="fld"><span>플랫폼(회사) 이름</span><input value="${esc(DB.settings.company)}" ${PRESET_COMPANY||(online()&&!isAdmin())?'readonly title="관리자만 바꿀 수 있습니다"':''} onchange="DB.settings.company=this.value;save();render()"></div>
  ${on?'':`<div class="fld"><span>보는 사람(직책)</span><select onchange="setRole(this.value)">${['대표이사','안전팀장','안전관리자'].map(o=>`<option ${o===DB.settings.role?'selected':''}>${o}</option>`).join('')}</select></div>`}</div></div>
  <div class="panel adm"><h3>데이터 관리 <small>관리자 전용</small></h3><div class="toolbar"><button class="btn primary" onclick="backup()">💾 백업 파일 받기</button><label class="btn ed">📂 백업 불러오기<input type="file" accept=".json" hidden onchange="restore(this)"></label>
- <button class="btn ed" onclick="if(confirm('예시 데이터로 다시 채울까요? 현재 데이터는 사라집니다.${on?'\\n(서버 자료도 바뀌어 모든 관리자 화면에 반영됩니다)':''}')){const s=DB.settings;DB=demo();DB.settings=s;replaceAll()}">예시 데이터</button><button class="btn danger ed" onclick="if(confirm('모든 기록을 지울까요? (현장 목록은 유지)${on?'\\n(서버 자료도 지워집니다)':''}')){['hazards','edu','broadcasts','inspections','directives','notices','accidents','vworkers','vsum','hrwork','risks'].forEach(k=>DB[k]=[]);replaceAll()}">전체 기록 비우기</button></div>
+ ${on?'':`<button class="btn ed" onclick="if(confirm('예시 데이터로 다시 채울까요? 현재 데이터는 사라집니다.')){const s=DB.settings;DB=demo();DB.settings=s;replaceAll()}">예시 데이터</button>`}<button class="btn danger ed" onclick="resetDlg()">🧹 자료 초기화</button></div>
  <div class="note">${on?'서버 연동 중에는 자료가 구글 시트에 저장됩니다. 백업 파일은 보관용입니다.':'데이터는 이 기기의 브라우저에 자동 저장됩니다. 다른 PC·휴대폰으로 옮기거나 보관하려면 백업 파일을 받아 두세요.'}</div></div></div>
  ${listPage('sites',{range:false,title:'현장 목록',sort:(a,b)=>a.name.localeCompare(b.name)})}${listPage('notices',{range:false,title:'공지사항'})}`;
 }
 function setRole(v){DB.settings.role=v;save();render()}
+/* ===== 관리자 : 자료 초기화 (항목 골라서 지우기 · 자동 백업 · 「초기화」 입력 확인) ===== */
+const RESET_ITEMS=[['risks','위험성평가'],['hazards','위험요인 (개선·조치 이력 포함)'],['accidents','산재·공상·아차사고'],['edu','교육 기록'],['broadcasts','번역 방송'],['inspections','현장 점검'],['hrwork','고위험작업'],['vworkers','취약근로자'],['directives','대표이사 지시사항'],['notices','공지사항'],['goals','안전보건 목표(KPI)'],['sites','현장 목록']];
+function resetDlg(){
+ if(online()&&!isAdmin())return alert('자료 초기화는 관리자만 할 수 있습니다.');
+ const row=([k,l])=>{const n=(DB[k]||[]).length,def=!['sites','goals'].includes(k)&&n>0;return `<label class="rsi"><input type="checkbox" value="${k}" ${def?'checked':''}><span>${l}</span><b>${n}건</b></label>`};
+ openModal('🧹 자료 초기화',`<div class="note" style="margin-bottom:10px">체크한 항목의 자료를 <b class="red">모두 지웁니다.</b>${online()?' 서버(구글 시트)에서도 지워져 <b>모든 회원 화면</b>에 반영됩니다.':''}<br>실행하면 먼저 <b>백업 파일이 자동으로 내려받아집니다</b> (실수했을 때 「📂 백업 불러오기」로 되돌릴 수 있음).<br><b>회원(로그인) 정보는 지워지지 않습니다.</b></div>
+ <div class="rsl">${RESET_ITEMS.map(row).join('')}</div>
+ <div style="display:flex;gap:8px;margin:8px 0 12px"><button class="btn sm" onclick="document.querySelectorAll('.rsl input').forEach(i=>i.checked=i.value!=='sites')">현장 목록 빼고 전체 선택</button><button class="btn sm" onclick="document.querySelectorAll('.rsl input').forEach(i=>i.checked=false)">선택 해제</button></div>
+ <div class="fld"><span>확인을 위해 <b class="red">초기화</b> 라고 입력하세요</span><input id="rsTxt" placeholder="초기화" autocomplete="off" style="width:100%;padding:10px;font-size:15px"></div>`,
+ [{t:'취소',fn:closeModal},{t:'초기화 실행',cls:'danger',fn:resetRun}]);
+}
+async function resetRun(){
+ const ks=[...document.querySelectorAll('.rsl input:checked')].map(i=>i.value);
+ if(!ks.length)return alert('지울 항목을 하나 이상 체크하세요.');
+ if(($('#rsTxt').value||'').replace(/\s/g,'')!=='초기화')return alert('확인 칸에 「초기화」라고 정확히 입력해야 실행됩니다.');
+ if(ks.includes('sites')&&!confirm('현장 목록까지 지우면 모든 화면이 빈 상태가 되고, 현장을 다시 등록해야 합니다.\n정말 지울까요?'))return;
+ const n=ks.reduce((a,k)=>a+(DB[k]||[]).length,0);
+ backup();
+ if(ks.includes('vworkers'))ks.push('vsum');
+ if(online()){setSync('busy');
+  try{const data={};ks.forEach(k=>data[k]=[]);await api('bulk',{data});ks.forEach(k=>DB[k]=[]);save();VER='';await pull();setSync('ok')}
+  catch(e){if(e.auth)return authFail(e.message);setSync('err',e.message);return alert('⚠ 서버 초기화 실패: '+e.message+'\n서버 자료는 그대로입니다.')}}
+ else{ks.forEach(k=>DB[k]=[]);save()}
+ closeModal();render();toast(`🧹 ${RESET_ITEMS.filter(x=>ks.includes(x[0])).length}개 항목 · ${n}건을 지웠습니다 (백업 파일 저장됨)`);
+}
 function backup(){dl(JSON.stringify(DB),`안전현황_대시보드_백업_${today()}.json`,'application/json')}
 function restore(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.sites)throw 0;DB=d;load2();replaceAll();alert('불러오기 완료')}catch(e){alert('올바른 백업 파일이 아닙니다.')}};r.readAsText(f)}
 function load2(){DB.settings=DB.settings||{role:'대표이사',company:'이재성플랫폼'};['hazards','edu','broadcasts','inspections','directives','notices','sites','accidents','vworkers','vsum','hrwork','risks','goals'].forEach(k=>DB[k]=DB[k]||[]);syncVTR()}
