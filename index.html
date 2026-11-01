@@ -864,7 +864,7 @@ function pgOverview(){
   <div class="panel alertp alerts"><h3><span style="background:#dc3540;color:#fff;padding:3px 14px;border-radius:999px;font-size:15px">🔔 긴급 알림</span> <span class="lnk" onclick="go('open')">전체보기 ›</span></h3>
   ${vwAlertHtml()}${alerts.map(h=>{const [t,c]=lvl(h);const d=diffDays(h.due||T,T);return `<div class="it" onclick="openForm('hazards','${h.id}')"><div class="tx"><b>${esc(siteName(h.siteId))} - ${esc(h.desc)}</b><span>조치기한 : ${h.due||'-'} <span class="${d<=1?'red':'org'}">(${d<0?'기한초과 '+(-d)+'일':d===0?'오늘':d+'일 남음'})</span></span></div><span>›</span></div>`}).join('')||'<div class="mut" style="padding:10px 0">미조치 위험요인이 없습니다 👍</div>'}
   </div>
-  <div class="panel"><h3>교육 · 다국어 교육 실적 <small>선택 기간</small></h3><div class="stats">
+  <div class="panel"><h3>다국어 교육 실적 <small>선택 기간</small></h3><div class="stats">
    <div class="stat" onclick="go('broadcast')"><div class="si">🌏</div><div><div class="l">다국어 교육(통역 방송)</div><div class="n">${bcCnt}<small>회</small></div></div></div>
    <div class="stat" onclick="go('edu')"><div class="si">👥</div><div><div class="l">교육 참여 인원</div><div class="n">${att.toLocaleString()}<small>명</small></div></div></div>
    <div class="stat" onclick="go('qr')"><div class="si">🔳</div><div><div class="l">QR 참여 인원</div><div class="n">${qr.toLocaleString()}<small>명</small></div></div></div>
