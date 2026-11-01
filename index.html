@@ -5,6 +5,34 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#06122a">
+<script>/* 카톡·네이버·인스타 등 앱 안 브라우저로 열리면 → 크롬(아이폰은 Safari)으로 바로 넘기기 */
+(function(){var ua=navigator.userAgent||'';
+ if(!/KAKAOTALK|NAVER\(inapp|Instagram|FBAN|FBAV|Line\/|DaumApps|everytimeApp|BAND\//i.test(ua)||/[?&]stay=1/.test(location.search)||!/^https?:/.test(location.protocol))return;
+ var url=location.href.split('#')[0],android=/Android/i.test(ua),kakao=/KAKAOTALK/i.test(ua),left=false,B=android?'크롬':'Safari',can=android||kakao||/Line\//i.test(ua);
+ var I=window.__INAPP={url:url,android:android,kakao:kakao,go:function(){
+   if(android)location.href='intent://'+url.replace(/^https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;end';
+   else if(kakao)location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(url);
+   else if(/Line\//i.test(ua))location.href=url+(url.indexOf('?')<0?'?':'&')+'openExternalBrowser=1';}};
+ document.addEventListener('visibilitychange',function(){if(document.hidden)left=true});
+ I.go();
+ if(android&&kakao)setTimeout(function(){if(!left)location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(url)},1600);
+ document.addEventListener('DOMContentLoaded',function(){
+  var d=document.createElement('div');d.id='inappov';
+  d.innerHTML='<div style="background:#fff;border-radius:16px;padding:26px 22px;max-width:340px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.25);font-family:inherit">'+
+   '<div style="font-size:34px">🌐</div><h3 style="margin:8px 0 6px;font-size:18px;color:#0b3d22">'+(android?'크롬':'Safari')+'으로 여는 중…</h3>'+
+   '<p style="font-size:14px;color:#555;line-height:1.6;margin:0 0 16px">'+(can?B+'이 열리면 이 창은 닫아도 됩니다.<br>열리지 않으면 아래 버튼을 누르세요.':'오른쪽 위(또는 아래) <b>⋯ 메뉴</b>에서<br>「'+B+'로 열기」를 눌러 주세요.')+'</p>'+
+   (can?'<button id="ia1" style="width:100%;padding:13px;border:0;border-radius:10px;background:#03c75a;color:#fff;font-size:15px;font-weight:700;margin-bottom:8px">'+B+(android?'으로':'로')+' 열기</button>':'')+
+   '<button id="ia2" style="width:100%;padding:12px;border:1px solid #ccc;border-radius:10px;background:#fff;font-size:14px;margin-bottom:8px">링크 복사 ('+B+' 주소창에 붙여넣기)</button>'+
+   '<button id="ia3" style="width:100%;padding:10px;border:0;background:none;color:#888;font-size:13px;text-decoration:underline">그냥 여기서 보기</button></div>';
+  d.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(20,30,25,.55);display:flex;align-items:center;justify-content:center;padding:18px';
+  document.body.appendChild(d);
+  if(can)document.getElementById('ia1').onclick=function(){left=false;I.go()};
+  document.getElementById('ia2').onclick=function(){var b=this;function ok(){b.textContent='✔ 복사됨 — '+B+' 주소창에 붙여넣으세요'}
+   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(url).then(ok,function(){prompt('아래 주소를 복사하세요',url)});else prompt('아래 주소를 복사하세요',url)};
+  document.getElementById('ia3').onclick=function(){d.remove()};
+ });
+})();
+</script>
 <title>이재성 플랫폼 | 본사 통합 안전현황</title>
 <style>
 :root{--bg:#18305a;--line:#1f3d70;--tx:#e6eefc;--mut:#8ea6cf;--blue:#2f80ff;--red:#ef4444;--org:#f59e0b;--yel:#facc15;--grn:#22c55e}
